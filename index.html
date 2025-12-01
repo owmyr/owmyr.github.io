@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olmir Stocker Neto | AI Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { slate: { 850: '#151e2e' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth fade for text changes */
+        .fade-text { transition: opacity 0.3s ease-in-out; }
+        .opacity-0 { opacity: 0; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-300 antialiased selection:bg-cyan-500 selection:text-white flex flex-col min-h-screen">
+
+    <nav class="fixed w-full z-50 bg-slate-900/90 backdrop-blur-sm border-b border-slate-800 transition-all duration-300">
+        <div class="flex justify-between items-center p-6 max-w-6xl mx-auto">
+            <a href="#" class="font-extrabold text-xl tracking-tight text-white hover:text-cyan-400 transition-colors">
+                Olmir<span class="text-cyan-400">.Dev</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                <a href="#about" class="hover:text-cyan-400 transition-colors" data-i18n="nav_about">About</a>
+                <a href="#projects" class="hover:text-cyan-400 transition-colors" data-i18n="nav_projects">Projects</a>
+                <a href="#experience" class="hover:text-cyan-400 transition-colors" data-i18n="nav_experience">Experience</a>
+                <a href="#contact" class="hover:text-cyan-400 transition-colors" data-i18n="nav_contact">Contact</a>
+
+                <button onclick="toggleLanguage()" class="flex items-center gap-1 text-slate-400 hover:text-white transition-colors border-r border-slate-700 pr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                    </svg>
+                    <span id="lang-label">EN</span>
+                </button>
+
+                <a id="resume-btn" href="resume-en.pdf" download class="flex items-center gap-2 px-4 py-2 border border-cyan-500 text-cyan-400 rounded hover:bg-cyan-500 hover:text-slate-900 transition-all font-bold shadow-[0_0_10px_rgba(34,211,238,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span data-i18n="nav_resume">Resume</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl -z-10"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -z-10"></div>
+
+        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div class="order-2 md:order-1 fade-text" id="hero-text">
+                <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-cyan-400 uppercase bg-slate-800/50 border border-slate-700 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    <span data-i18n="hero_status">Available for Remote Work</span>
+                </div>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight">
+                    <span data-i18n="hero_title_1">Engineering</span> <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500" data-i18n="hero_title_2">Intelligent</span> 
+                    <span data-i18n="hero_title_3">Systems.</span>
+                </h1>
+                <p class="text-lg text-slate-400 mb-8 leading-relaxed max-w-lg" data-i18n="hero_desc">
+                    Software Developer & AI Engineer specializing in <strong>Generative AI</strong>, <strong>RAG Pipelines</strong>, and secure <strong>Backend Architecture</strong>.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#projects" class="text-center bg-cyan-500 text-slate-900 px-8 py-3.5 rounded-lg font-bold hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/25" data-i18n="cta_projects">
+                        View My Work
+                    </a>
+                    <a href="https://github.com/owmyr" target="_blank" class="flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg font-medium text-white border border-slate-700 hover:border-slate-500 hover:bg-slate-800/50 transition-all">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                        GitHub Profile
+                    </a>
+                </div>
+            </div>
+            
+            <div class="order-1 md:order-2">
+                <div class="bg-slate-850 p-6 rounded-2xl border border-slate-700/50 shadow-2xl transform md:rotate-2 hover:rotate-0 transition-transform duration-500">
+                    <div class="flex gap-2 mb-4 border-b border-slate-700/50 pb-4">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <code class="text-sm font-mono block text-slate-400">
+                        <span class="text-purple-400">from</span> langchain <span class="text-purple-400">import</span> RagChain<br>
+                        <span class="text-purple-400">import</span> fastapi<br><br>
+                        <span class="text-slate-500"># Building robust AI solutions</span><br>
+                        <span class="text-cyan-400">class</span> <span class="text-yellow-300">AI_Engineer</span>:<br>
+                        &nbsp;&nbsp;<span class="text-cyan-400">def</span> <span class="text-yellow-300">__init__</span>(self):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;self.skills = [<span class="text-green-400">'Python'</span>, <span class="text-green-400">'RAG'</span>, <span class="text-green-400">'Docker'</span>]<br>
+                        &nbsp;&nbsp;<span class="text-cyan-400">def</span> <span class="text-yellow-300">deploy</span>(self):<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">return</span> <span class="text-green-400">"Production Ready"</span>
+                    </code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-slate-850/50 border-y border-slate-800">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-white mb-12" data-i18n="skills_title">Technical Arsenal</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="p-6 bg-slate-900 rounded-xl border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-1">
+                    <h3 class="text-cyan-400 font-bold mb-3" data-i18n="skill_ai">AI & Data</h3>
+                    <div class="text-sm text-slate-400 space-y-1">
+                        <div>LangChain, Gemini</div>
+                        <div>PyTorch & TensorFlow</div>
+                        <div>Pandas & Scikit-learn</div>
+                        <div>Spark & Hadoop</div>
+                    </div>
+                </div>
+                <div class="p-6 bg-slate-900 rounded-xl border border-slate-800 hover:border-purple-500/50 transition-all hover:-translate-y-1">
+                    <h3 class="text-purple-400 font-bold mb-3" data-i18n="skill_backend">Backend</h3>
+                    <div class="text-sm text-slate-400 space-y-1">
+                        <div>Python & Node.js</div>
+                        <div>FastAPI</div>
+                        <div>SQLAlchemy</div>
+                        <div>Pydantic</div>
+                    </div>
+                </div>
+                <div class="p-6 bg-slate-900 rounded-xl border border-slate-800 hover:border-green-500/50 transition-all hover:-translate-y-1">
+                    <h3 class="text-green-400 font-bold mb-3" data-i18n="skill_db">Database</h3>
+                    <div class="text-sm text-slate-400 space-y-1">
+                        <div>PostgreSQL & SQL</div>
+                        <div>MongoDB (NoSQL)</div>
+                        <div>Firestore</div>
+                        <div>FAISS (Vector DB)</div>
+                    </div>
+                </div>
+                <div class="p-6 bg-slate-900 rounded-xl border border-slate-800 hover:border-yellow-500/50 transition-all hover:-translate-y-1">
+                    <h3 class="text-yellow-400 font-bold mb-3" data-i18n="skill_devops">DevOps</h3>
+                    <div class="text-sm text-slate-400 space-y-1">
+                        <div>Docker</div>
+                        <div>GitHub Actions</div>
+                        <div>CI/CD Pipelines</div>
+                        <div>Pytest & Selenium</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-24 bg-slate-900">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4" data-i18n="proj_title">Featured Projects</h2>
+                <p class="text-slate-400" data-i18n="proj_subtitle">Scalable solutions built with modern architecture and best practices.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <article class="bg-slate-850 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/30 transition-all shadow-lg hover:shadow-cyan-500/10 flex flex-col group">
+                    <div class="p-8 flex-1">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors" data-i18n="p1_title">RAG Chatbot</h3>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed" data-i18n="p1_desc">
+                            A Retrieval-Augmented Generation system using local knowledge bases. Features multi-stage query chaining (LCEL) and TinyBERT re-ranking for high contextual accuracy.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="px-2.5 py-1 bg-slate-800 text-cyan-300 text-xs font-medium rounded border border-slate-700">LangChain</span>
+                            <span class="px-2.5 py-1 bg-slate-800 text-cyan-300 text-xs font-medium rounded border border-slate-700">Gemini Pro</span>
+                            <span class="px-2.5 py-1 bg-slate-800 text-cyan-300 text-xs font-medium rounded border border-slate-700">FAISS</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-900/50 border-t border-slate-800">
+                        <a href="https://github.com/owmyr/rag-knowledge-base-chatbot" target="_blank" class="text-slate-300 text-sm font-semibold hover:text-cyan-400 flex items-center gap-2 transition-colors">
+                            <span data-i18n="view_repo">View Repository</span> <span>&rarr;</span>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="bg-slate-850 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/30 transition-all shadow-lg hover:shadow-cyan-500/10 flex flex-col group">
+                    <div class="p-8 flex-1">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors" data-i18n="p2_title">AI News Summarizer</h3>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed" data-i18n="p2_desc">
+                            Serverless full-stack app. Scrapes news, summarizes via AI, and emails subscribers. Fully automated daily workflow via CI/CD pipelines.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="px-2.5 py-1 bg-slate-800 text-purple-300 text-xs font-medium rounded border border-slate-700">Python</span>
+                            <span class="px-2.5 py-1 bg-slate-800 text-purple-300 text-xs font-medium rounded border border-slate-700">Firebase</span>
+                            <span class="px-2.5 py-1 bg-slate-800 text-purple-300 text-xs font-medium rounded border border-slate-700">GitHub Actions</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-900/50 border-t border-slate-800">
+                        <a href="https://github.com/owmyr/ai-news-summarizer" target="_blank" class="text-slate-300 text-sm font-semibold hover:text-cyan-400 flex items-center gap-2 transition-colors">
+                            <span data-i18n="view_repo">View Repository</span> <span>&rarr;</span>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="bg-slate-850 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/30 transition-all shadow-lg hover:shadow-cyan-500/10 flex flex-col group">
+                    <div class="p-8 flex-1">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors" data-i18n="p3_title">Secure Auth API</h3>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed" data-i18n="p3_desc">
+                            Production-ready RESTful API module for user authentication. Implements stateless JWT security, bcrypt password hashing, and Pydantic validation.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="px-2.5 py-1 bg-slate-800 text-green-300 text-xs font-medium rounded border border-slate-700">FastAPI</span>
+                            <span class="px-2.5 py-1 bg-slate-800 text-green-300 text-xs font-medium rounded border border-slate-700">JWT</span>
+                            <span class="px-2.5 py-1 bg-slate-800 text-green-300 text-xs font-medium rounded border border-slate-700">SQLAlchemy</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-900/50 border-t border-slate-800">
+                        <a href="https://github.com/owmyr/fastapi-secure-auth" target="_blank" class="text-slate-300 text-sm font-semibold hover:text-cyan-400 flex items-center gap-2 transition-colors">
+                            <span data-i18n="view_repo">View Repository</span> <span>&rarr;</span>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="py-20 bg-slate-850/30 border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-6">
+            
+            <h2 class="text-2xl font-bold text-white mb-8 border-l-4 border-cyan-500 pl-4" data-i18n="exp_title">Work Experience</h2>
+            <div class="space-y-12">
+                <div class="relative pl-8 border-l border-slate-700 group">
+                    <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-cyan-500 ring-4 ring-slate-900"></div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="job1_role">AI Engineer (Contract)</h3>
+                    <div class="text-cyan-400 mb-3 text-sm uppercase tracking-wide">Revelo Remote | Sep 2025 - Present</div>
+                    <p class="text-slate-400 max-w-2xl leading-relaxed" data-i18n="job1_desc">
+                        Acting as a Human-in-the-Loop (HITL) reviewer to iteratively guide LLMs in solving complex coding issues. Developing comprehensive unit tests using pytest and managing Docker environments for bug reproducibility.
+                    </p>
+                </div>
+                
+                <div class="relative pl-8 border-l border-slate-700 group">
+                    <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-slate-600 ring-4 ring-slate-900"></div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="job2_role">Account Management Specialist</h3>
+                    <div class="text-slate-500 mb-3 text-sm uppercase tracking-wide">Solenis | Sep 2024 - May 2025</div>
+                    <p class="text-slate-400 max-w-2xl leading-relaxed" data-i18n="job2_desc">
+                        Managed a $40M+ B2B portfolio. Proactively analyzed client data and KPIs to identify growth opportunities, helping customers optimize their supply chain.
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold text-white mt-20 mb-8 border-l-4 border-purple-500 pl-4" data-i18n="edu_title">Education</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-slate-850 p-6 rounded-xl border border-slate-800 hover:border-purple-500/30 transition-all">
+                    <h4 class="font-bold text-white text-lg mb-1" data-i18n="edu1_title">Postgraduate Degrees</h4>
+                    <p class="text-purple-400 text-sm mb-4 font-medium">Educaminas (2025-2027)</p>
+                    <ul class="text-slate-400 text-sm space-y-2 list-disc list-inside marker:text-purple-500">
+                        <li data-i18n="edu1_1">Data Science & Machine Learning</li>
+                        <li data-i18n="edu1_2">Software Architecture</li>
+                        <li data-i18n="edu1_3">Applied Statistics</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-850 p-6 rounded-xl border border-slate-800 hover:border-purple-500/30 transition-all">
+                    <h4 class="font-bold text-white text-lg mb-1" data-i18n="edu2_title">Bachelor's Degree</h4>
+                    <p class="text-purple-400 text-sm mb-4 font-medium">UNIP - São Paulo (2021-2024)</p>
+                    <p class="text-slate-400 text-sm leading-relaxed" data-i18n="edu2_desc">
+                        Systems Analysis and Development. Covered software engineering, SQL, Python/Java, and web/mobile development.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-slate-950 py-16 border-t border-slate-800 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto text-center px-6 relative z-10">
+            <h2 class="text-3xl font-bold text-white mb-8" data-i18n="footer_title">Ready to build something intelligent?</h2>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-4 mb-12">
+                <a href="mailto:owmyrstocker@gmail.com" class="px-8 py-4 bg-white text-slate-900 font-bold rounded-lg hover:bg-cyan-50 transition-colors shadow-lg shadow-white/10">
+                    owmyrstocker@gmail.com
+                </a>
+                <a href="https://linkedin.com/in/olmir-stocker-neto" target="_blank" class="px-8 py-4 border border-slate-700 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 hover:border-slate-600 transition-colors">
+                    LinkedIn
+                </a>
+                <a href="https://github.com/owmyr" target="_blank" class="px-8 py-4 border border-slate-700 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 hover:border-slate-600 transition-colors">
+                    GitHub
+                </a>
+            </div>
+            
+            <div class="flex flex-col gap-2 text-slate-600 text-sm">
+                <p>Sao Paulo, Brazil | +55 11 94518-6180</p>
+                <p>&copy; 2025 Olmir Stocker Neto. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            en: {
+                nav_about: "About",
+                nav_projects: "Projects",
+                nav_experience: "Experience",
+                nav_contact: "Contact",
+                nav_resume: "Resume",
+                hero_status: "Available for Remote Work",
+                hero_title_1: "Engineering",
+                hero_title_2: "Intelligent",
+                hero_title_3: "Systems.",
+                hero_desc: "Software Developer & AI Engineer specializing in <strong>Generative AI</strong>, <strong>RAG Pipelines</strong>, and secure <strong>Backend Architecture</strong>.",
+                cta_projects: "View My Work",
+                skills_title: "Technical Arsenal",
+                skill_ai: "AI & Data",
+                skill_backend: "Backend",
+                skill_db: "Database",
+                skill_devops: "DevOps",
+                proj_title: "Featured Projects",
+                proj_subtitle: "Scalable solutions built with modern architecture and best practices.",
+                p1_title: "RAG Chatbot",
+                p1_desc: "A Retrieval-Augmented Generation system using local knowledge bases. Features multi-stage query chaining (LCEL) and TinyBERT re-ranking for high contextual accuracy.",
+                p2_title: "AI News Summarizer",
+                p2_desc: "Serverless full-stack app. Scrapes news, summarizes via AI, and emails subscribers. Fully automated daily workflow via CI/CD pipelines.",
+                p3_title: "Secure Auth API",
+                p3_desc: "Production-ready RESTful API module for user authentication. Implements stateless JWT security, bcrypt password hashing, and Pydantic validation.",
+                view_repo: "View Repository",
+                exp_title: "Work Experience",
+                job1_role: "AI Engineer (Contract)",
+                job1_desc: "Acting as a Human-in-the-Loop (HITL) reviewer to iteratively guide LLMs in solving complex coding issues. Developing comprehensive unit tests using pytest and managing Docker environments for bug reproducibility.",
+                job2_role: "Account Management Specialist",
+                job2_desc: "Managed a $40M+ B2B portfolio. Proactively analyzed client data and KPIs to identify growth opportunities, helping customers optimize their supply chain.",
+                edu_title: "Education",
+                edu1_title: "Postgraduate Degrees",
+                edu1_1: "Data Science & Machine Learning",
+                edu1_2: "Software Architecture",
+                edu1_3: "Applied Statistics",
+                edu2_title: "Bachelor's Degree",
+                edu2_desc: "Systems Analysis and Development. Covered software engineering, SQL, Python/Java, and web/mobile development.",
+                footer_title: "Ready to build something intelligent?"
+            },
+            pt: {
+                nav_about: "Sobre",
+                nav_projects: "Projetos",
+                nav_experience: "Experiência",
+                nav_contact: "Contato",
+                nav_resume: "Currículo",
+                hero_status: "Disponível para Trabalho Remoto",
+                hero_title_1: "Engenharia de",
+                hero_title_2: "Sistemas",
+                hero_title_3: "Inteligentes.",
+                hero_desc: "Desenvolvedor de Software e Engenheiro de IA especializado em <strong>IA Generativa</strong>, <strong>Pipelines RAG</strong> e <strong>Arquitetura Backend</strong> segura.",
+                cta_projects: "Ver Projetos",
+                skills_title: "Arsenal Técnico",
+                skill_ai: "IA e Dados",
+                skill_backend: "Backend",
+                skill_db: "Banco de Dados",
+                skill_devops: "DevOps",
+                proj_title: "Projetos em Destaque",
+                proj_subtitle: "Soluções escaláveis construídas com arquitetura moderna.",
+                p1_title: "Chatbot RAG",
+                p1_desc: "Sistema de Geração Aumentada por Recuperação usando bases de conhecimento locais. Apresenta encadeamento de consulta multi-estágio (LCEL) e reclassificação TinyBERT para alta precisão contextual.",
+                p2_title: "Resumidor de Notícias IA",
+                p2_desc: "Aplicativo full-stack serverless. Extrai notícias, resume via IA e envia e-mails aos assinantes. Fluxo de trabalho diário totalmente automatizado via pipelines de CI/CD.",
+                p3_title: "API de Autenticação Segura",
+                p3_desc: "Módulo de API RESTful pronto para produção. Implementa segurança stateless com JWT, hash de senha bcrypt e validação Pydantic.",
+                view_repo: "Ver Repositório",
+                exp_title: "Experiência Profissional",
+                job1_role: "Engenheiro de IA (Contrato)",
+                job1_desc: "Atuando como revisor humano (HITL) para guiar LLMs na resolução de problemas complexos de código. Desenvolvendo testes unitários com pytest e gerenciando ambientes Docker para reprodutibilidade de bugs.",
+                job2_role: "Especialista em Gerenciamento de Contas",
+                job2_desc: "Gerenciei um portfólio B2B de mais de $40M. Analisei proativamente dados de clientes e KPIs para identificar oportunidades de crescimento e otimizar a cadeia de suprimentos.",
+                edu_title: "Formação Acadêmica",
+                edu1_title: "Pós-Graduação",
+                edu1_1: "Ciência de Dados e Machine Learning",
+                edu1_2: "Arquitetura de Software",
+                edu1_3: "Estatística Aplicada",
+                edu2_title: "Bacharelado",
+                edu2_desc: "Análise e Desenvolvimento de Sistemas. Cobriu engenharia de software, SQL, Python/Java e desenvolvimento web/mobile.",
+                footer_title: "Vamos construir algo inteligente?"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            // Fade out
+            document.querySelectorAll('[data-i18n]').forEach(el => el.classList.add('opacity-0'));
+            
+            setTimeout(() => {
+                currentLang = currentLang === 'en' ? 'pt' : 'en';
+                
+                // Update text
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (translations[currentLang][key]) {
+                        el.innerHTML = translations[currentLang][key];
+                    }
+                });
+
+                // Update Button Label
+                document.getElementById('lang-label').innerText = currentLang.toUpperCase();
+
+                // Update Resume Link
+                const resumeBtn = document.getElementById('resume-btn');
+                resumeBtn.href = currentLang === 'en' ? 'resume-en.pdf' : 'resume-pt.pdf';
+
+                // Fade in
+                document.querySelectorAll('[data-i18n]').forEach(el => el.classList.remove('opacity-0'));
+            }, 300);
+        }
+    </script>
+</body>
+</html>
