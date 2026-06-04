@@ -4,8 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Olmir Stocker Neto | AI Engineer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- SEO & Open Graph Meta Tags -->
+    <meta name="description" content="Olmir Stocker Neto - Software Engineer & AI Specialist focusing on Generative AI, RAG Pipelines, and secure Backend Architecture.">
+    <meta property="og:title" content="Olmir Stocker Neto | AI Engineer">
+    <meta property="og:description" content="Software Developer & AI Engineer specializing in Python, Generative AI, and Enterprise Systems.">
+    <meta property="og:image" content="https://owmyr.github.io/og-image.png">
+    <meta property="og:url" content="https://owmyr.github.io/">
+
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -20,6 +32,8 @@
         /* Smooth fade for text changes */
         .fade-text { transition: opacity 0.3s ease-in-out; }
         .opacity-0 { opacity: 0; }
+        /* Active nav link transition */
+        .nav-link { transition: color 0.3s ease; }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-300 antialiased selection:bg-cyan-500 selection:text-white flex flex-col min-h-screen">
@@ -30,20 +44,20 @@
                 Olmir<span class="text-cyan-400">.Dev</span>
             </a>
             
-            <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                <a href="#about" class="hover:text-cyan-400 transition-colors" data-i18n="nav_about">About</a>
-                <a href="#projects" class="hover:text-cyan-400 transition-colors" data-i18n="nav_projects">Projects</a>
-                <a href="#experience" class="hover:text-cyan-400 transition-colors" data-i18n="nav_experience">Experience</a>
-                <a href="#contact" class="hover:text-cyan-400 transition-colors" data-i18n="nav_contact">Contact</a>
+            <div class="hidden md:flex items-center space-x-6 text-sm font-medium" id="nav-menu">
+                <a href="#about" class="nav-link hover:text-cyan-400" data-i18n="nav_about">About</a>
+                <a href="#projects" class="nav-link hover:text-cyan-400" data-i18n="nav_projects">Projects</a>
+                <a href="#experience" class="nav-link hover:text-cyan-400" data-i18n="nav_experience">Experience</a>
+                <a href="#contact" class="nav-link hover:text-cyan-400" data-i18n="nav_contact">Contact</a>
 
-                <button onclick="toggleLanguage()" class="flex items-center gap-1 text-slate-400 hover:text-white transition-colors border-r border-slate-700 pr-4">
+                <button onclick="toggleLanguage()" aria-label="Toggle Language" class="flex items-center gap-1 text-slate-400 hover:text-white transition-colors border-r border-slate-700 pr-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                     </svg>
                     <span id="lang-label">EN</span>
                 </button>
 
-                <a id="resume-btn" href="resume-en.pdf" download class="flex items-center gap-2 px-4 py-2 border border-cyan-500 text-cyan-400 rounded hover:bg-cyan-500 hover:text-slate-900 transition-all font-bold shadow-[0_0_10px_rgba(34,211,238,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+                <a id="resume-btn" href="resume-en.pdf" download aria-label="Download Resume" class="flex items-center gap-2 px-4 py-2 border border-cyan-500 text-cyan-400 rounded hover:bg-cyan-500 hover:text-slate-900 transition-all font-bold shadow-[0_0_10px_rgba(34,211,238,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
@@ -53,7 +67,7 @@
         </div>
     </nav>
 
-    <section class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+    <section id="home" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl -z-10"></div>
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -z-10"></div>
 
@@ -75,7 +89,7 @@
                     <a href="#projects" class="text-center bg-cyan-500 text-slate-900 px-8 py-3.5 rounded-lg font-bold hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/25" data-i18n="cta_projects">
                         View My Work
                     </a>
-                    <a href="https://github.com/owmyr" target="_blank" class="flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg font-medium text-white border border-slate-700 hover:border-slate-500 hover:bg-slate-800/50 transition-all">
+                    <a href="https://github.com/owmyr" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" class="flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg font-medium text-white border border-slate-700 hover:border-slate-500 hover:bg-slate-800/50 transition-all">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
                         GitHub Profile
                     </a>
@@ -107,7 +121,7 @@
     <section id="about" class="py-20 bg-slate-850/50 border-y border-slate-800">
         <div class="max-w-6xl mx-auto px-6">
             <h2 class="text-3xl font-bold text-white mb-12" data-i18n="skills_title">Technical Arsenal</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
                 <div class="p-6 bg-slate-900 rounded-xl border border-slate-800 hover:border-cyan-500/50 transition-all hover:-translate-y-1">
                     <h3 class="text-cyan-400 font-bold mb-3" data-i18n="skill_ai">AI & Data</h3>
                     <div class="text-sm text-slate-400 space-y-1">
@@ -115,6 +129,15 @@
                         <div>PyTorch & TensorFlow</div>
                         <div>Pandas & Scikit-learn</div>
                         <div>Spark & Hadoop</div>
+                    </div>
+                </div>
+                <div class="p-6 bg-slate-900 rounded-xl border border-slate-800 hover:border-blue-500/50 transition-all hover:-translate-y-1">
+                    <h3 class="text-blue-400 font-bold mb-3" data-i18n="skill_enterprise">Enterprise Tech</h3>
+                    <div class="text-sm text-slate-400 space-y-1">
+                        <div>SAP IBP & o9 Solutions</div>
+                        <div>ABAP & IBPL</div>
+                        <div>Demand & S&OP</div>
+                        <div>ETL Pipelines</div>
                     </div>
                 </div>
                 <div class="p-6 bg-slate-900 rounded-xl border border-slate-800 hover:border-purple-500/50 transition-all hover:-translate-y-1">
@@ -171,7 +194,7 @@
                         </div>
                     </div>
                     <div class="p-4 bg-slate-900/50 border-t border-slate-800">
-                        <a href="https://github.com/owmyr/D-D-RAG-Chatbot" target="_blank" class="text-slate-300 text-sm font-semibold hover:text-cyan-400 flex items-center gap-2 transition-colors">
+                        <a href="https://github.com/owmyr/D-D-RAG-Chatbot" target="_blank" rel="noopener noreferrer" class="text-slate-300 text-sm font-semibold hover:text-cyan-400 flex items-center gap-2 transition-colors">
                             <span data-i18n="view_repo">View Repository</span> <span>&rarr;</span>
                         </a>
                     </div>
@@ -192,7 +215,7 @@
                         </div>
                     </div>
                     <div class="p-4 bg-slate-900/50 border-t border-slate-800">
-                        <a href="https://github.com/owmyr/NewsSummary" target="_blank" class="text-slate-300 text-sm font-semibold hover:text-cyan-400 flex items-center gap-2 transition-colors">
+                        <a href="https://github.com/owmyr/NewsSummary" target="_blank" rel="noopener noreferrer" class="text-slate-300 text-sm font-semibold hover:text-cyan-400 flex items-center gap-2 transition-colors">
                             <span data-i18n="view_repo">View Repository</span> <span>&rarr;</span>
                         </a>
                     </div>
@@ -213,7 +236,7 @@
                         </div>
                     </div>
                     <div class="p-4 bg-slate-900/50 border-t border-slate-800">
-                        <a href="https://github.com/owmyr/Auth" target="_blank" class="text-slate-300 text-sm font-semibold hover:text-cyan-400 flex items-center gap-2 transition-colors">
+                        <a href="https://github.com/owmyr/Auth" target="_blank" rel="noopener noreferrer" class="text-slate-300 text-sm font-semibold hover:text-cyan-400 flex items-center gap-2 transition-colors">
                             <span data-i18n="view_repo">View Repository</span> <span>&rarr;</span>
                         </a>
                     </div>
@@ -227,21 +250,31 @@
             
             <h2 class="text-2xl font-bold text-white mb-8 border-l-4 border-cyan-500 pl-4" data-i18n="exp_title">Work Experience</h2>
             <div class="space-y-12">
+                
                 <div class="relative pl-8 border-l border-slate-700 group">
                     <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-cyan-500 ring-4 ring-slate-900"></div>
-                    <h3 class="text-xl font-bold text-white" data-i18n="job1_role">AI Engineer (Contract)</h3>
-                    <div class="text-cyan-400 mb-3 text-sm uppercase tracking-wide">Revelo Remote | Sep 2025 - Present</div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="job1_role">Software Engineer</h3>
+                    <div class="text-cyan-400 mb-3 text-sm uppercase tracking-wide" data-i18n="job1_meta">Accenture Hybrid | Jan 2026 - Present</div>
                     <p class="text-slate-400 max-w-2xl leading-relaxed" data-i18n="job1_desc">
-                        Acting as a Human-in-the-Loop (HITL) reviewer to iteratively guide LLMs in solving complex coding issues. Developing comprehensive unit tests using pytest and managing Docker environments for bug reproducibility.
+                        Contributing to a national supply chain system migration to o9 Solutions for M. Dias Branco. Building Python AI agents and optimizing IBPL queries to process nationwide datasets, and collaborating on scalable ETL data engineering pipelines integrated with SAP IBP.
+                    </p>
+                </div>
+
+                <div class="relative pl-8 border-l border-slate-700 group">
+                    <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-purple-500 ring-4 ring-slate-900"></div>
+                    <h3 class="text-xl font-bold text-white" data-i18n="job2_role">AI Engineer (Contract)</h3>
+                    <div class="text-purple-400 mb-3 text-sm uppercase tracking-wide" data-i18n="job2_meta">Revelo Remote | Sep 2025 - Present</div>
+                    <p class="text-slate-400 max-w-2xl leading-relaxed" data-i18n="job2_desc">
+                        Applying prompt engineering and acting as a Human-in-the-Loop (HITL) reviewer to iteratively guide LLMs in solving complex coding issues. Developing comprehensive unit tests using pytest and managing AWS SageMaker/Docker environments.
                     </p>
                 </div>
                 
                 <div class="relative pl-8 border-l border-slate-700 group">
                     <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-slate-600 ring-4 ring-slate-900"></div>
-                    <h3 class="text-xl font-bold text-white" data-i18n="job2_role">Account Management Specialist</h3>
-                    <div class="text-slate-500 mb-3 text-sm uppercase tracking-wide">Solenis | Sep 2024 - May 2025</div>
-                    <p class="text-slate-400 max-w-2xl leading-relaxed" data-i18n="job2_desc">
-                        Managed a $40M+ B2B portfolio. Proactively analyzed client data and KPIs to identify growth opportunities, helping customers optimize their supply chain.
+                    <h3 class="text-xl font-bold text-white" data-i18n="job3_role">Account Management Specialist</h3>
+                    <div class="text-slate-500 mb-3 text-sm uppercase tracking-wide" data-i18n="job3_meta">Solenis Remote - US HQ | Sep 2024 - May 2025</div>
+                    <p class="text-slate-400 max-w-2xl leading-relaxed" data-i18n="job3_desc">
+                        Managed a $40M+ B2B portfolio. Developed custom Python scripts to automate order processing and proactively analyzed client data to identify growth opportunities, optimizing the supply chain.
                     </p>
                 </div>
             </div>
@@ -276,17 +309,17 @@
                 <a href="mailto:owmyrstocker@gmail.com" class="px-8 py-4 bg-white text-slate-900 font-bold rounded-lg hover:bg-cyan-50 transition-colors shadow-lg shadow-white/10">
                     owmyrstocker@gmail.com
                 </a>
-                <a href="https://linkedin.com/in/olmir-stocker-neto" target="_blank" class="px-8 py-4 border border-slate-700 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 hover:border-slate-600 transition-colors">
+                <a href="https://linkedin.com/in/olmir-stocker-neto" target="_blank" rel="noopener noreferrer" class="px-8 py-4 border border-slate-700 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 hover:border-slate-600 transition-colors">
                     LinkedIn
                 </a>
-                <a href="https://github.com/owmyr" target="_blank" class="px-8 py-4 border border-slate-700 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 hover:border-slate-600 transition-colors">
+                <a href="https://github.com/owmyr" target="_blank" rel="noopener noreferrer" class="px-8 py-4 border border-slate-700 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 hover:border-slate-600 transition-colors">
                     GitHub
                 </a>
             </div>
             
             <div class="flex flex-col gap-2 text-slate-600 text-sm">
                 <p>Sao Paulo, Brazil | +55 11 94518-6180</p>
-                <p>&copy; 2025 Olmir Stocker Neto. All rights reserved.</p>
+                <p>&copy; 2026 Olmir Stocker Neto. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -307,6 +340,7 @@
                 cta_projects: "View My Work",
                 skills_title: "Technical Arsenal",
                 skill_ai: "AI & Data",
+                skill_enterprise: "Enterprise Tech",
                 skill_backend: "Backend",
                 skill_db: "Database",
                 skill_devops: "DevOps",
@@ -320,10 +354,15 @@
                 p3_desc: "Production-ready RESTful API module for user authentication. Implements stateless JWT security, bcrypt password hashing, and Pydantic validation.",
                 view_repo: "View Repository",
                 exp_title: "Work Experience",
-                job1_role: "AI Engineer (Contract)",
-                job1_desc: "Acting as a Human-in-the-Loop (HITL) reviewer to iteratively guide LLMs in solving complex coding issues. Developing comprehensive unit tests using pytest and managing Docker environments for bug reproducibility.",
-                job2_role: "Account Management Specialist",
-                job2_desc: "Managed a $40M+ B2B portfolio. Proactively analyzed client data and KPIs to identify growth opportunities, helping customers optimize their supply chain.",
+                job1_role: "Software Engineer",
+                job1_meta: "Accenture Hybrid | Jan 2026 - Present",
+                job1_desc: "Contributing to a national supply chain system migration to o9 Solutions for M. Dias Branco. Building Python AI agents and optimizing IBPL queries to process nationwide datasets, and collaborating on scalable ETL data engineering pipelines integrated with SAP IBP.",
+                job2_role: "AI Engineer (Contract)",
+                job2_meta: "Revelo Remote | Sep 2025 - Present",
+                job2_desc: "Applying prompt engineering and acting as a Human-in-the-Loop (HITL) reviewer to iteratively guide LLMs in solving complex coding issues. Developing comprehensive unit tests using pytest and managing AWS SageMaker/Docker environments.",
+                job3_role: "Account Management Specialist",
+                job3_meta: "Solenis Remote - US HQ | Sep 2024 - May 2025",
+                job3_desc: "Managed a $40M+ B2B portfolio. Developed custom Python scripts to automate order processing and proactively analyzed client data to identify growth opportunities, optimizing the supply chain.",
                 edu_title: "Education",
                 edu1_title: "Postgraduate Degrees",
                 edu1_1: "Data Science & Machine Learning",
@@ -347,6 +386,7 @@
                 cta_projects: "Ver Projetos",
                 skills_title: "Arsenal Técnico",
                 skill_ai: "IA e Dados",
+                skill_enterprise: "Sistemas Corporativos",
                 skill_backend: "Backend",
                 skill_db: "Banco de Dados",
                 skill_devops: "DevOps",
@@ -360,10 +400,15 @@
                 p3_desc: "Módulo de API RESTful pronto para produção. Implementa segurança stateless com JWT, hash de senha bcrypt e validação Pydantic.",
                 view_repo: "Ver Repositório",
                 exp_title: "Experiência Profissional",
-                job1_role: "Engenheiro de IA (Contrato)",
-                job1_desc: "Atuando como revisor humano (HITL) para guiar LLMs na resolução de problemas complexos de código. Desenvolvendo testes unitários com pytest e gerenciando ambientes Docker para reprodutibilidade de bugs.",
-                job2_role: "Especialista em Gerenciamento de Contas",
-                job2_desc: "Gerenciei um portfólio B2B de mais de $40M. Analisei proativamente dados de clientes e KPIs para identificar oportunidades de crescimento e otimizar a cadeia de suprimentos.",
+                job1_role: "Engenheiro de Software Pleno",
+                job1_meta: "Accenture Híbrido | Jan 2026 - Presente",
+                job1_desc: "Contribuindo para a migração nacional do sistema de cadeia de suprimentos para o9 Solutions na M. Dias Branco. Construindo agentes de IA em Python e otimizando consultas IBPL para processar conjuntos de dados, além de colaborar em pipelines de dados ETL integrados ao SAP IBP.",
+                job2_role: "Engenheiro de IA (Contrato)",
+                job2_meta: "Revelo Remoto | Set 2025 - Presente",
+                job2_desc: "Atuando como revisor humano (HITL) e aplicando engenharia de prompts para guiar LLMs na resolução de problemas complexos de código. Desenvolvendo testes unitários com pytest e gerenciando ambientes AWS SageMaker e Docker.",
+                job3_role: "Especialista em Gerenciamento de Contas",
+                job3_meta: "Solenis Remoto - Sede dos EUA | Set 2024 - Mai 2025",
+                job3_desc: "Gerenciei um portfólio B2B de mais de $40M. Desenvolvi scripts em Python para automatizar o processamento de pedidos e analisei proativamente dados de clientes para identificar oportunidades de crescimento e otimizar a cadeia de suprimentos.",
                 edu_title: "Formação Acadêmica",
                 edu1_title: "Pós-Graduação",
                 edu1_1: "Ciência de Dados e Machine Learning",
@@ -403,6 +448,29 @@
                 document.querySelectorAll('[data-i18n]').forEach(el => el.classList.remove('opacity-0'));
             }, 300);
         }
+
+        // Active Navigation Highlight
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('#nav-menu a');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-cyan-400');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('text-cyan-400');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            sections.forEach(section => {
+                if (section.id) observer.observe(section);
+            });
+        });
     </script>
 </body>
 </html>
