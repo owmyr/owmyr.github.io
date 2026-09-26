@@ -1,0 +1,32 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# TypeScript build cache
+*.tsbuildinfo
+next-env.d.ts
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env*.local
+
+# IDE configurations
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+

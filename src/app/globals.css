@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Skills UI Studio CSS Tokens */
+:root {
+  --bg: #000000;
+  --ink: #f4f4f5;
+  --muted: rgba(244, 244, 245, 0.62);
+  --faint: rgba(244, 244, 245, 0.40);
+  --line: rgba(255, 255, 255, 0.10);
+  --card: rgba(14, 14, 16, 0.55);
+  --card-strong: rgba(10, 10, 12, 0.72);
+  --silver: #e4e4e7;
+  --display: 'Urbanist', system-ui, -apple-system, sans-serif;
+  --sans: 'Supreme', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --maxw: 1200px;
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(228, 228, 231, 0.85);
+  color: #000000;
+}
+
+/* Studio Typography */
+.font-display {
+  font-family: var(--display);
+}
+
+.font-sans {
+  font-family: var(--sans);
+}
+
+.font-mono {
+  font-family: var(--mono);
+}
+
+/* Studio Eyebrow */
+.studio-eyebrow {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(10px, 0.85vw, 12px);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--faint);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.studio-eyebrow::before {
+  content: "||||";
+  letter-spacing: -1px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+}
+
+/* Studio Display Headline */
+.studio-display {
+  font-family: var(--display);
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  text-shadow: 0 2px 50px rgba(0, 0, 0, 0.55);
+}
+
+.studio-display .roman {
+  font-style: normal;
+  font-weight: 400;
+  color: rgba(244, 244, 245, 0.75);
+}
+
+/* Studio Lead Text */
+.studio-lead {
+  font-family: var(--sans);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Studio Card */
+.studio-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Studio Buttons */
+.studio-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 13.5px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s, border-color 0.25s, color 0.25s;
+  background: none;
+  text-decoration: none;
+}
+
+.studio-btn-light {
+  background: #f4f4f5;
+  color: #0a0a0a;
+}
+
+.studio-btn-light:hover {
+  transform: scale(1.04);
+  background: #ffffff;
+}
+
+.studio-btn-ghost {
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #f4f4f5;
+  backdrop-filter: blur(6px);
+}
+
+.studio-btn-ghost:hover {
+  transform: scale(1.04);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Studio Corner Brackets */
+.bracket-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}
+
+.bracket-corner-tl {
+  top: 0;
+  left: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.bracket-corner-tr {
+  top: 0;
+  right: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  border-right: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.bracket-corner-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.bracket-corner-br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  border-right: 1px solid rgba(255, 255, 255, 0.35);
+}

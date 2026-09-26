@@ -1,0 +1,987 @@
+#!/usr/bin/env python3
+"""
+Generator script to build production-ready index.html using the exact
+handoff.md specification and Skills UI Studio aesthetic rules.
+"""
+
+import html
+
+def escape(text):
+    if text is None:
+        return ""
+    return html.escape(str(text))
+
+def main():
+    brand_name = "Olmir Stocker Neto"
+    role_label = "Applied AI Engineer"
+    headline = "Applied AI & LLM Systems Engineer"
+    eyebrow_text = "Applied Generative AI · Multi-Agent Architectures · Production Pipelines"
+    summary = (
+        "Software Engineer specializing in applied Generative AI, autonomous multi-agent architectures, "
+        "and production LLM integrations (Python, TypeScript). Proven track record of shipping resilient "
+        "AI systems—including enterprise knowledge assistants at Accenture that reduced developer onboarding "
+        "time by 40% and saved 100+ senior engineering hours, fault-tolerant agent swarms, and hybrid RAG "
+        "pipelines with vector reranking. Experienced in turning non-deterministic foundation models into "
+        "secure, reliable, and observable software."
+    )
+    location = "São Paulo, Brazil · Open to Remote (UTC-3 / US & European Timezone Overlap)"
+
+    # Nav links order specified in handoff.md: Skills, Projects, Systems, Experience, Contact
+    nav_links = [
+        {"label": "Skills", "href": "#skills"},
+        {"label": "Projects", "href": "#projects"},
+        {"label": "Systems", "href": "#systems"},
+        {"label": "Experience", "href": "#experience"},
+        {"label": "Contact", "href": "#contact"},
+    ]
+
+    # Promoted Technical Skills Block (directly in hero zone under CTAs)
+    promoted_skills = [
+        {"category": "Languages", "skills": ["Python", "TypeScript", "SQL"]},
+        {"category": "Models & AI", "skills": ["Claude", "Gemini", "Ollama", "LangChain"]},
+        {"category": "Retrieval & Databases", "skills": ["Hybrid RAG", "FAISS", "Cross-Encoder", "PostgreSQL", "SQLite"]},
+        {"category": "Testing & Infrastructure", "skills": ["Docker", "pytest", "Vitest", "AWS SageMaker", "GitHub Actions"]},
+    ]
+
+    ai_projects = [
+        {
+            "id": "care-agent-swarm",
+            "title": "Multi-Agent Swarm AI Orchestration Layer (care-agent-swarm)",
+            "domain": "Fault-tolerant multi-agent orchestration layer for residential care workflows, automating resident intake, compliance checks, and incident triage.",
+            "flow": [
+                "[Resident Intake] -> [Concurrent Sub-Agents] -> [Zod Runtime Contracts] -> [Deterministic Output]",
+                "[Circuit Breaker (429)] -> [Exponential Backoff]",
+                "[Escalation Safeguard] -> [Clinical Human Loop]",
+            ],
+            "bullets": [
+                "Implemented concurrent sub-agents with fault-isolated execution using Promise.allSettled, allowing partial intake completion even if an individual agent experiences transient degradation.",
+                "Engineered a resilient LLM harness featuring a 3-state circuit breaker state machine, exponential backoff with jitter, and automatic handling of provider rate limits (HTTP 429).",
+                "Enforced strict runtime data contracts using Zod schemas to validate and re-prompt malformed model outputs, guaranteeing deterministic JSON payloads.",
+                "Integrated 4-layer HIPAA-compliant PHI redaction across application logs and built an automated clinical escalation safeguard for unresolved incident loops.",
+            ],
+            "verification": "42 automated unit and integration tests passing in Vitest using mock client dependency injection with zero API cost.",
+            "tags": ["TypeScript", "Node.js", "Claude", "Zod", "Vitest"],
+            "repoUrl": "https://github.com/owmyr/care-agent-swarm",
+            "liveUrl": None,
+        },
+        {
+            "id": "trendscout",
+            "title": "TrendScout — Autonomous Trend Intelligence & Multi-Agent Pipeline (TrendScout)",
+            "domain": "End-to-end intelligence platform tracking e-commerce sales velocity, eliminating commodity noise, and semantically clustering apparel design trends.",
+            "flow": [
+                "[Stealth Playwright Crawler] -> [Regex Token Filter] -> [Gemini Pool (Local Ollama Fallback)] -> [Air-Gapped Pipeline] -> [Next.js Live UI]"
+            ],
+            "bullets": [
+                "Built a dual-tier LLM engine utilizing a cloud Gemini pool for high-throughput 25-item micro-batch clustering with seamless offline fallback to a local Ollama model.",
+                "Designed an adaptive discovery algorithm combining historical baseline keywords with velocity-driven search terms to catch emerging micro-trends early.",
+                "Implemented deterministic regex pre-filtering to remove plain and basic garments prior to LLM inference, reducing token consumption while preserving audit baselines.",
+                "Built an air-gapped data export pipeline feeding a public Next.js subscriber portal on Vercel with zero database connections from the client.",
+            ],
+            "verification": "222 automated pytest tests covering crawlers, database models, LLM fallbacks, and export sanitizers.",
+            "tags": ["Python", "Gemini", "Ollama", "Playwright", "Next.js", "SQLite", "pytest"],
+            "repoUrl": "https://github.com/owmyr/TrendScout",
+            "liveUrl": "https://trendscout-shopee.vercel.app",
+        },
+        {
+            "id": "thedailybot",
+            "title": "The Daily Bot — News AI Summarizer & Subscription Service (thedailybot)",
+            "domain": "Automated news aggregation and subscription platform delivering daily personalized digests to active email subscribers.",
+            "flow": [
+                "[News Sources (BBC, G1)] -> [Async Scraper (httpx)] -> [Gemini Multilingual Summarizer] -> [Subscriber Preference Routing] -> [Scheduled SMTP Dispatch]"
+            ],
+            "bullets": [
+                "Built an asynchronous multi-source scraper in Python (httpx, asyncio) featuring semaphore concurrency limits, circuit breaker recovery, and immediate Firestore persistence per article.",
+                "Leveraged Gemini AI to generate neutral summaries in the native language of each source (BBC in English, G1 in Portuguese).",
+                "Implemented an intelligent subscriber preference engine to generate customized Jinja2 email templates and manage rate-limited SMTP delivery.",
+                "Authored a comprehensive test suite of 275 automated tests (82% coverage) with pytest and pytest-asyncio, with scheduled daily runs orchestrated via GitHub Actions CI/CD.",
+            ],
+            "verification": "275 automated tests (82% coverage) with pytest and pytest-asyncio.",
+            "tags": ["Python", "Gemini", "asyncio", "Firebase", "GitHub Actions", "pytest"],
+            "repoUrl": "https://github.com/owmyr/thedailybot",
+            "liveUrl": "https://thedailybot.web.app",
+        },
+        {
+            "id": "d-d-rag-chatbot",
+            "title": "Hybrid RAG Chatbot with Cross-Encoder Re-Ranking (D-D-RAG-Chatbot)",
+            "domain": "Modular Hybrid RAG pipeline using LangChain and Gemini to query complex documentation with sub-second retrieval latency.",
+            "flow": [
+                "[Header-Aware Markdown Chunking] -> [FAISS Dense Index] -> [Cross-Encoder Reranker] -> [Sub-Second Context] -> [Gemini Generation]",
+                "[Atomic Staging Pointer Swap (-50% Index Time)]"
+            ],
+            "bullets": [
+                "Built an ingestion pipeline with markdown header-aware chunking to preserve document hierarchy, breadcrumbs, and cross-references within chunk metadata.",
+                "Implemented a two-stage retrieval pipeline combining FAISS dense vector search with a local TinyBERT Cross-Encoder reranker for high contextual precision.",
+                "Engineered atomic index swapping using staging directories to prevent vector store corruption during updates, cutting indexing time by 50%.",
+            ],
+            "verification": "Automated pytest suite covering chunking boundaries, FAISS index loading, and LCEL chain generation.",
+            "tags": ["Python", "LangChain", "FAISS", "Cross-Encoder", "Gemini", "pytest"],
+            "repoUrl": "https://github.com/owmyr/D-D-RAG-Chatbot",
+            "liveUrl": None,
+        },
+    ]
+
+    systems_projects = [
+        {
+            "id": "santa-marcelina",
+            "title": "Colégio Santa Marcelina — Real-Time Collaborative Pedagogical Platform (SantaMarcelina)",
+            "domain": "Collaborative Single Page Application replacing decentralized spreadsheets with an instant evaluation portal for faculty and coordinators.",
+            "bullets": [
+                "Engineered an offline-first storage engine combining in-memory caching for instant UI updates, quota-safe local storage persistence, and cross-tab synchronization via BroadcastChannel.",
+                "Implemented a debounced synchronization queue (400ms) with batch upsert queries and compound keys, eliminating write race conditions and data loss.",
+                "Integrated Supabase Realtime WebSockets with PostgreSQL Row Level Security (RLS) to synchronize evaluation updates across admin dashboards instantaneously.",
+                "Optimized web performance via dynamic lazy loading for heavy spreadsheet generation modules (SheetJS), keeping the core production bundle under 56 kB with zero Oxlint warnings.",
+            ],
+            "verification": "Core production bundle under 56 kB with zero Oxlint warnings.",
+            "tags": ["React", "Vite", "Supabase", "PostgreSQL", "Tailwind CSS", "SheetJS"],
+            "repoUrl": "https://github.com/owmyr/SantaMarcelina",
+        }
+    ]
+
+    experience = [
+        {
+            "company": "Revelo",
+            "role": "AI Engineer",
+            "period": "Oct 2025 – Present · Freelance / Project-Based · Remote",
+            "bullets": [
+                "Applied advanced prompt engineering to diagnose and document failure modes in generative AI models for code generation tasks.",
+                "Acted as a Human-in-the-Loop (HITL) reviewer, evaluating 100+ code snippets to guarantee production quality and resolve critical model degradation issues.",
+                "Authored 50+ unit tests with pytest to validate deterministic correctness and execution safety of AI-generated solutions.",
+                "Managed and replicated complex multi-dependency runtime environments from GitHub commits using AWS SageMaker and Docker.",
+                "Delivered 200+ approved tasks across multiple AI engineering workflows, completing 50+ peer reviews to improve model alignment.",
+            ],
+            "tags": ["AWS SageMaker", "Docker", "pytest", "Python", "Prompt Engineering"],
+        },
+        {
+            "company": "Turing",
+            "role": "AI Agent Evaluation Engineer",
+            "period": "May 2026 – Sep 2026 · Contract · Remote",
+            "bullets": [
+                "Engineered and evaluated multi-step Chain-of-Thought (CoT) reasoning trajectories for frontier LLMs, formalizing step-by-step mathematical reasoning and optimal algorithmic trade-offs.",
+                "Authored complex algorithmic reasoning benchmarks with LaTeX mathematical formulations, enforcing deterministic output constraints and eliminating model hallucinations.",
+                "Containerized automated evaluation harnesses within Docker sandboxes, executing 30+ edge-case test suites per task to stress-test model reasoning and verify time/memory complexity boundaries (O(N log N) vs O(N²)).",
+            ],
+            "tags": ["Frontier LLMs", "Chain-of-Thought", "Docker Sandboxes", "LaTeX", "pytest"],
+        },
+        {
+            "company": "Accenture",
+            "role": "Software Engineer",
+            "period": "Jan 2026 – May 2026 · Hybrid · Enterprise Client",
+            "bullets": [
+                "Deployed an enterprise AI Knowledge Assistant utilizing Microsoft Copilot and RAG architecture, designing specialized domain sub-agents that reduced developer onboarding time by 40% and saved 100+ senior engineering hours across enterprise configuration workflows.",
+                "Engineered high-volume ETL pipelines and complex SQL extraction queries integrated directly with SAP IBP to process nationwide datasets and support operational planning.",
+                "Contributed to the modernization of legacy supply chain architecture into a scalable, high-throughput distributed ecosystem.",
+                "Collaborated in an Agile Scrum framework to map API contracts, author technical specifications, and ensure cross-team alignment.",
+            ],
+            "tags": ["Microsoft Copilot", "RAG", "Python", "SAP IBP", "SQL"],
+        },
+    ]
+
+    roman_numerals = ["I.", "II.", "III.", "IV."]
+
+    html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{escape(brand_name)} — {escape(headline)}</title>
+  
+  <!-- SEO, Open Graph & Twitter Cards -->
+  <meta name="description" content="{escape(summary)}" />
+  <meta property="og:title" content="{escape(brand_name)} | {escape(headline)}" />
+  <meta property="og:description" content="{escape(summary)}" />
+  <meta property="og:image" content="https://owmyr.github.io/og-image.png" />
+  <meta property="og:url" content="https://owmyr.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{escape(brand_name)} | {escape(headline)}" />
+  <meta name="twitter:description" content="{escape(summary)}" />
+  <meta name="twitter:image" content="https://owmyr.github.io/og-image.png" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>" />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- Body / UI sans (Skills UI Studio Workspace Standard) -->
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=supreme@400,500&display=swap" rel="stylesheet">
+  
+  <!-- Display sans (Headings) & Monospace (Code / Architecture) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {{
+      --bg: #000000;
+      --ink: #f4f4f5;
+      --muted: rgba(244, 244, 245, .74);
+      --faint: rgba(244, 244, 245, .68); /* WCAG 2.1 AA Compliant */
+      --line: rgba(255, 255, 255, .10);
+      --card: rgba(14, 14, 16, .65);
+      --silver: #e4e4e7;
+      --display: 'Urbanist', system-ui, sans-serif;
+      --sans: 'Supreme', system-ui, -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --maxw: 1200px;
+    }}
+
+    * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+    html {{ scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none; color-scheme: dark; }}
+    html::-webkit-scrollbar, body::-webkit-scrollbar {{ width: 0; height: 0; display: none; }}
+    body {{
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }}
+    a {{ color: inherit; text-decoration: none; }}
+    img {{ display: block; max-width: 100%; }}
+    ul {{ list-style: none; }}
+    ::selection {{ background: rgba(228, 228, 231, .85); color: #000; }}
+
+    /* ---------- Full-page aurora background (Skills UI Studio) ---------- */
+    .aurora-stage {{ position: fixed; inset: 0; z-index: 0; background: #000; overflow: hidden; pointer-events: none; }}
+    .aurora-stage > div {{ position: absolute; inset: 0; }}
+    .aurora-stage canvas {{ width: 100% !important; height: 100% !important; display: block; }}
+    .aurora-sheen {{ opacity: .58; mix-blend-mode: screen; }}
+    .aurora-vignette {{
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        radial-gradient(120% 85% at 50% 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.5) 100%),
+        linear-gradient(180deg, rgba(0,0,0,.24) 0%, rgba(0,0,0,.06) 30%, rgba(0,0,0,.06) 70%, rgba(0,0,0,.4) 100%),
+        rgba(0,0,0,.12);
+    }}
+    .noscript-bg {{ position: fixed; inset: 0; z-index: 0; background: radial-gradient(80% 60% at 50% 30%, #1c1c20 0%, #050505 70%); }}
+
+    /* ---------- Page layer ---------- */
+    .page {{ position: relative; z-index: 2; }}
+    .wrap {{ width: 100%; max-width: var(--maxw); margin: 0 auto; padding-left: 28px; padding-right: 28px; }}
+    section {{ position: relative; padding: 56px 0; }}
+
+    /* ---------- Typography helpers ---------- */
+    .eyebrow {{
+      font-family: var(--mono); font-weight: 500;
+      font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--faint); display: inline-flex; align-items: center; gap: 8px;
+    }}
+    .eyebrow::before {{ content: "●"; color: #34d399; font-size: 8px; }}
+    .display {{ font-family: var(--display); font-weight: 600; font-style: normal; line-height: 1.04; letter-spacing: -.025em; color: #fff; }}
+    .lead {{ font-family: var(--sans); color: var(--muted); line-height: 1.65; }}
+
+    /* ---------- Studio Button System ---------- */
+    .btn {{
+      display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+      font-family: var(--sans); font-weight: 500; font-size: 13.5px;
+      padding: 10px 20px; border-radius: 999px; border: 1px solid transparent;
+      transition: transform .25s cubic-bezier(.16,1,.3,1), background .25s, border-color .25s, color .25s;
+      background: none; text-decoration: none; line-height: 1;
+    }}
+    .btn-light {{ background: #f4f4f5; color: #0a0a0a; }}
+    .btn-light:hover {{ transform: scale(1.04); background: #fff; }}
+    .btn-ghost {{ border-color: rgba(255, 255, 255, .25); color: #f4f4f5; backdrop-filter: blur(6px); }}
+    .btn-ghost:hover {{ transform: scale(1.04); background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .45); }}
+    .btn .arrow {{ transition: transform .25s; }}
+    .btn:hover .arrow {{ transform: translateX(3px); }}
+
+    /* ---------- Studio Cards ---------- */
+    .card {{ background: var(--card); border: 1px solid var(--line); border-radius: 20px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }}
+
+    /* ---------- Studio Corner Brackets ---------- */
+    .bracket-corner {{ position: absolute; width: 12px; height: 12px; pointer-events: none; }}
+    .bracket-corner-tl {{ top: 0; left: 0; border-top: 1px solid rgba(255, 255, 255, .35); border-left: 1px solid rgba(255, 255, 255, .35); }}
+    .bracket-corner-tr {{ top: 0; right: 0; border-top: 1px solid rgba(255, 255, 255, .35); border-right: 1px solid rgba(255, 255, 255, .35); }}
+    .bracket-corner-bl {{ bottom: 0; left: 0; border-bottom: 1px solid rgba(255, 255, 255, .35); border-left: 1px solid rgba(255, 255, 255, .35); }}
+    .bracket-corner-br {{ bottom: 0; right: 0; border-bottom: 1px solid rgba(255, 255, 255, .35); border-right: 1px solid rgba(255, 255, 255, .35); }}
+
+    /* ---------- Reveal Transitions ---------- */
+    .reveal {{ opacity: 0; transform: translateY(20px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }}
+    .reveal.in-view {{ opacity: 1; transform: none; }}
+
+    /* ============ HEADER ============ */
+    header.nav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 50; transition: background .35s, border-color .35s; border-bottom: 1px solid transparent; }}
+    header.nav.scrolled {{ background: rgba(0, 0, 0, .80); border-bottom-color: var(--line); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }}
+    .nav-inner {{ display: flex; align-items: center; justify-content: space-between; height: 72px; }}
+    .brand {{ font-family: var(--display); font-weight: 600; font-size: 20px; letter-spacing: .02em; display: flex; align-items: center; gap: 10px; color: #fff; }}
+    .brand .dot {{ width: 8px; height: 8px; border-radius: 50%; background: var(--silver); box-shadow: 0 0 12px rgba(228, 228, 231, .8); }}
+    .brand .role-badge {{ font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); border: 1px solid var(--line); padding: 3px 9px; border-radius: 999px; margin-left: 6px; }}
+    .nav-links {{ display: flex; gap: 4px; }}
+    .nav-links a {{ font-size: 13.5px; color: var(--muted); padding: 8px 14px; border-radius: 999px; transition: color .2s, background .2s; }}
+    .nav-links a:hover {{ color: #fff; background: rgba(255, 255, 255, .06); }}
+    .nav-right {{ display: flex; align-items: center; gap: 8px; }}
+
+    /* ============ HERO ============ */
+    .hero {{ min-height: calc(100vh - 72px); display: flex; flex-direction: column; justify-content: center; padding-top: 86px; padding-bottom: 24px; }}
+    .hero .location-tag {{
+      display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono);
+      font-size: 11.5px; color: var(--faint); letter-spacing: .04em; margin-bottom: 12px;
+    }}
+    .hero h1 {{ font-size: clamp(36px, 5.8vw, 84px); font-family: var(--display); line-height: 1.04; font-weight: 700; color: #fff; }}
+    .hero .sub {{ display: flex; gap: 36px; align-items: flex-end; flex-wrap: wrap; margin-top: 18px; }}
+    .hero .sub p {{ font-size: clamp(14px, 1.2vw, 16px); max-width: 660px; color: var(--muted); line-height: 1.65; }}
+    .hero-cta {{ display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }}
+
+    /* 1-Click Copy Email Button */
+    .copy-email-btn {{
+      display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono);
+      font-size: 12px; color: var(--silver); padding: 9px 18px; border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .25); background: rgba(255, 255, 255, .04);
+      cursor: pointer; transition: background .2s, border-color .2s;
+    }}
+    .copy-email-btn:hover {{ background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .45); color: #fff; }}
+
+    /* Toast Notification */
+    .toast {{
+      position: fixed; bottom: 24px; right: 24px; z-index: 100; padding: 12px 20px;
+      border-radius: 12px; background: rgba(14, 14, 18, .95); border: 1px solid rgba(255, 255, 255, .25);
+      color: #fff; font-family: var(--mono); font-size: 12px; display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .85); backdrop-filter: blur(14px);
+      opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .25s, transform .25s;
+    }}
+    .toast.show {{ opacity: 1; transform: translateY(0); pointer-events: auto; }}
+
+    /* ============ PROMOTED TECHNICAL SKILLS IN HERO (#skills) ============ */
+    .hero-skills {{
+      margin-top: 28px; padding: 20px 24px; border-radius: 16px;
+      border: 1px solid var(--line); background: rgba(10, 10, 12, .80);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+      position: relative;
+    }}
+    .hero-skills-group {{ display: flex; flex-direction: column; gap: 10px; }}
+    .hero-skills-label {{ font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--silver); font-weight: 500; }}
+    .hero-skills-pills {{ display: flex; flex-wrap: wrap; gap: 6px; }}
+    .telemetry-pill {{
+      padding: 3.5px 9px; border-radius: 6px; background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--line); color: var(--silver); font-size: 11.5px; font-family: var(--mono);
+    }}
+
+    /* ============ PROJECT CARDS (#projects) ============ */
+    .sec-head {{ display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap; margin-bottom: 32px; }}
+    .sec-head h2 {{ font-size: clamp(30px, 4vw, 56px); }}
+    .proj-list {{ display: flex; flex-direction: column; gap: 32px; }}
+    .proj-card {{
+      position: relative; border-radius: 24px; border: 1px solid var(--line);
+      background: var(--card); backdrop-filter: blur(14px); padding: 32px;
+      overflow: hidden; transition: border-color .3s;
+    }}
+    .proj-card:hover {{ border-color: rgba(255, 255, 255, .24); }}
+    .proj-header {{ display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }}
+    .proj-title {{ font-family: var(--display); font-size: clamp(22px, 2.5vw, 32px); font-weight: 600; line-height: 1.2; margin-bottom: 6px; color: #fff; }}
+    .proj-domain {{ font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 880px; margin-bottom: 18px; }}
+
+    /* Flow diagram box */
+    .flow-box {{
+      margin-bottom: 20px; padding: 14px 18px; border-radius: 12px;
+      border: 1px solid var(--line); background: #070709; overflow-x: auto;
+    }}
+    .flow-label {{ font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }}
+    .flow-label::before {{ content: "●"; font-size: 8px; color: var(--silver); }}
+    .flow-line {{ font-family: var(--mono); font-size: 12px; color: #e4e4e7; line-height: 1.55; white-space: nowrap; }}
+
+    /* Project Bullets */
+    .proj-bullets {{ margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }}
+    .proj-bullets li {{ display: flex; gap: 10px; font-size: 13.5px; color: var(--muted); line-height: 1.55; }}
+    .proj-bullets li::before {{ content: "—"; color: var(--faint); flex-shrink: 0; }}
+
+    /* Verification note */
+    .proj-verify {{
+      display: flex; gap: 10px; align-items: flex-start; padding: 12px 16px;
+      border-radius: 10px; background: rgba(255, 255, 255, .02); border: 1px solid var(--line);
+      font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 20px;
+    }}
+    .proj-verify::before {{ content: "●"; color: #34d399; font-size: 10px; margin-top: 2px; flex-shrink: 0; }}
+
+    /* Project Footer */
+    .proj-footer {{ display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; padding-top: 16px; border-top: 1px solid var(--line); }}
+
+    /* ============ FULLSTACK SYSTEMS (#systems) ============ */
+    .systems-card {{
+      position: relative; border-radius: 24px; border: 1px solid var(--line);
+      background: var(--card); backdrop-filter: blur(14px); padding: 32px;
+      overflow: hidden; transition: border-color .3s;
+    }}
+    .systems-card:hover {{ border-color: rgba(255, 255, 255, .24); }}
+
+    /* ============ WORK EXPERIENCE (#experience) ============ */
+    .exp-list {{ border-top: 1px solid var(--line); }}
+    .exp-entry {{
+      display: flex; align-items: baseline; gap: 24px; padding: 32px 6px;
+      border-bottom: 1px solid var(--line); transition: padding-left .35s, color .35s;
+    }}
+    .exp-entry:hover {{ padding-left: 12px; }}
+    .exp-idx {{ font-family: var(--mono); font-size: 13px; color: var(--faint); width: 36px; flex: none; }}
+    .exp-body {{ flex: 1; }}
+    .exp-top {{ display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }}
+    .exp-comp {{ font-family: var(--display); font-weight: 600; font-size: clamp(22px, 3vw, 36px); color: #fff; }}
+    .exp-meta {{ font-size: 12.5px; color: var(--faint); font-family: var(--mono); }}
+    .exp-bullets {{ margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }}
+    .exp-bullets li {{ display: flex; gap: 10px; font-size: 13.5px; color: var(--muted); line-height: 1.5; }}
+    .exp-bullets li::before {{ content: "—"; color: var(--faint); flex-shrink: 0; }}
+    .exp-tags {{ margin-top: 14px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, .06); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }}
+    .exp-tags-label {{ font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-right: 4px; }}
+
+    /* ============ EDUCATION SUBSECTION (#education) ============ */
+    .edu-grid {{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 14px; }}
+    .edu-card {{
+      position: relative; background: var(--card); border: 1px solid var(--line);
+      border-radius: 20px; padding: 26px; backdrop-filter: blur(14px);
+    }}
+    .edu-card-label {{ font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin-bottom: 12px; }}
+
+    /* ============ FOOTER & WORDMARK ============ */
+    footer {{ position: relative; z-index: 2; border-top: 1px solid var(--line); padding-top: 56px; padding-bottom: 36px; }}
+    .foot-main {{ display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }}
+    .foot-col h4 {{ font-family: var(--sans); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--faint); margin-bottom: 18px; font-weight: 500; }}
+    .foot-col a {{ display: block; font-size: 14px; color: var(--muted); padding: 5px 0; transition: color .2s; }}
+    .foot-col a:hover {{ color: #fff; }}
+    .foot-center .big {{ font-family: var(--display); font-size: 20px; color: #fff; margin-bottom: 6px; }}
+    .foot-bar {{ display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; color: var(--faint); font-family: var(--mono); }}
+    .wordmark-wrap {{ position: relative; overflow: hidden; padding: 20px 0 10px; }}
+    .wordmark {{
+      font-family: var(--display); font-style: normal; font-weight: 600;
+      font-size: clamp(52px, 14vw, 190px); line-height: .82; text-align: center; white-space: nowrap;
+      background: linear-gradient(180deg, rgba(244, 244, 245, .92), rgba(244, 244, 245, .12));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      user-select: none; will-change: transform;
+    }}
+
+    /* ============ RESPONSIVE MEDIA QUERIES ============ */
+    @media (max-width: 980px) {{
+      .foot-main {{ grid-template-columns: 1fr; gap: 32px; }}
+      .edu-grid {{ grid-template-columns: 1fr; }}
+      .hero-skills {{ grid-template-columns: repeat(2, 1fr); gap: 16px; }}
+    }}
+    @media (max-width: 850px) {{
+      .nav-links {{ display: none; }}
+      .hero {{ min-height: auto; padding-top: 86px; }}
+      .exp-entry {{ flex-direction: column; gap: 6px; }}
+      .exp-idx {{ width: auto; }}
+    }}
+    @media (max-width: 560px) {{
+      .hero-skills {{ grid-template-columns: 1fr; }}
+    }}
+    @media (prefers-reduced-motion: reduce) {{
+      *, *::before, *::after {{ animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }}
+      .reveal {{ opacity: 1; transform: none; }}
+    }}
+  </style>
+</head>
+<body>
+
+  <!-- Full-Page Aurora Background (Skills UI Studio Mesh Shader) -->
+  <div class="aurora-stage" aria-hidden="true">
+    <div id="aurora-field"></div>
+    <div id="aurora-sheen" class="aurora-sheen"></div>
+  </div>
+  <div class="aurora-vignette" aria-hidden="true"></div>
+  <noscript><div class="noscript-bg"></div></noscript>
+
+  <!-- Toast Notification Feedback -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span style="color: #34d399;">●</span>
+    <span id="toast-text">Email copied to clipboard.</span>
+  </div>
+
+  <!-- ==================== STUDIO NAVIGATION BAR ==================== -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <a class="brand" href="#top">
+          <span class="dot"></span>
+          <span>{escape(brand_name)}</span>
+        </a>
+        <span class="role-badge">{escape(role_label)}</span>
+      </div>
+
+      <nav class="nav-links">
+"""
+
+    for link in nav_links:
+        html_content += f"""        <a href="{escape(link['href'])}">{escape(link['label'])}</a>\n"""
+
+    html_content += f"""      </nav>
+
+      <div class="nav-right">
+        <!-- Single Resume Download CTA -->
+        <a class="btn btn-light" href="olmir-stocker-neto-resume-ai.pdf" download="Olmir_Stocker_Neto_Resume.pdf" target="_blank" rel="noopener noreferrer">
+          Resume (PDF) ↗
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN PAGE LAYER ==================== -->
+  <main class="page" id="top">
+
+    <!-- ==================== HERO SECTION (WITH PROMOTED TECHNICAL SKILLS #skills) ==================== -->
+    <section class="hero wrap">
+      <!-- Location & Remote Status -->
+      <div class="location-tag reveal">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+        <span>{escape(location)}</span>
+      </div>
+
+      <div class="hero-head">
+        <div class="eyebrow reveal" style="margin-bottom: 12px;">{escape(eyebrow_text)}</div>
+        <h1 class="reveal">
+          {escape(headline)}
+        </h1>
+
+        <div class="sub">
+          <p class="lead reveal">
+            {escape(summary)}
+          </p>
+
+          <div class="hero-cta reveal">
+            <a class="btn btn-light" href="#projects">View Projects <span class="arrow">↓</span></a>
+            <a class="btn btn-ghost" href="olmir-stocker-neto-resume-ai.pdf" download="Olmir_Stocker_Neto_Resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume (PDF) ↗</a>
+            <button type="button" class="copy-email-btn" onclick="copyEmail()" title="Copy email address to clipboard">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span>Copy Email</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promoted Technical Skills Block (#skills) - Saves ~100px vertical space to pull projects above fold -->
+      <div class="hero-skills reveal" id="skills">
+        <span class="bracket-corner bracket-corner-tl"></span>
+        <span class="bracket-corner bracket-corner-br"></span>
+"""
+
+    for group in promoted_skills:
+        html_content += f"""        <div class="hero-skills-group">
+          <span class="hero-skills-label">{escape(group['category'])}</span>
+          <div class="hero-skills-pills">
+"""
+        for s in group["skills"]:
+            html_content += f"""            <span class="telemetry-pill">{escape(s)}</span>\n"""
+        html_content += f"""          </div>
+        </div>\n"""
+
+    html_content += f"""      </div>
+    </section>
+
+    <!-- ==================== FEATURED AI PROJECTS SECTION (#projects) ==================== -->
+    <section id="projects" class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow reveal">AI Systems</span>
+          <h2 class="display reveal" style="margin-top: 14px;">Featured AI Projects</h2>
+        </div>
+        <p class="lead reveal" style="max-width: 440px;">
+          Production-grade multi-agent orchestration, autonomous trend pipelines, and hybrid RAG retrieval systems.
+        </p>
+      </div>
+
+      <div class="proj-list">
+"""
+
+    for p in ai_projects:
+        html_content += f"""        <!-- Project Card: {escape(p['title'])} -->
+        <article class="proj-card reveal" id="{escape(p['id'])}">
+          <span class="bracket-corner bracket-corner-tl"></span>
+          <span class="bracket-corner bracket-corner-tr"></span>
+          <span class="bracket-corner bracket-corner-bl"></span>
+          <span class="bracket-corner bracket-corner-br"></span>
+
+          <div class="proj-header">
+            <div>
+              <h3 class="proj-title">{escape(p['title'])}</h3>
+              <p class="proj-domain">{escape(p['domain'])}</p>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+"""
+        if p.get("liveUrl"):
+            html_content += f"""              <a class="btn btn-light" href="{escape(p['liveUrl'])}" target="_blank" rel="noopener noreferrer">
+                Live App <span class="arrow">↗</span>
+              </a>\n"""
+        html_content += f"""              <a class="btn btn-ghost" href="{escape(p['repoUrl'])}" target="_blank" rel="noopener noreferrer">
+                GitHub Repo ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Architecture Flow -->
+          <div class="flow-box">
+            <div class="flow-label">Architecture Flow</div>
+"""
+        for line in p["flow"]:
+            html_content += f"""            <div class="flow-line">{escape(line)}</div>\n"""
+
+        html_content += f"""          </div>
+
+          <!-- Core Engineering Details -->
+          <ul class="proj-bullets">
+"""
+        for b in p["bullets"]:
+            html_content += f"""            <li><span>{escape(b)}</span></li>\n"""
+
+        html_content += f"""          </ul>
+
+          <!-- Verification & Testing -->
+          <div class="proj-verify">
+            <span><strong>Verification &amp; Testing:</strong> {escape(p['verification'])}</span>
+          </div>
+
+          <!-- Technology Tags -->
+          <div class="proj-footer">
+            <span style="font-family: var(--mono); font-size: 11px; color: var(--faint);">Technologies:</span>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+"""
+        for tag in p["tags"]:
+            html_content += f"""              <span class="telemetry-pill">{escape(tag)}</span>\n"""
+
+        html_content += f"""            </div>
+          </div>
+        </article>\n\n"""
+
+    html_content += f"""      </div>
+    </section>
+
+    <!-- ==================== FULLSTACK & OFFLINE-FIRST SYSTEMS (#systems) ==================== -->
+    <section id="systems" class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow reveal">Fullstack &amp; Offline-First</span>
+          <h2 class="display reveal" style="margin-top: 14px;">Fullstack &amp; Systems Projects</h2>
+        </div>
+        <p class="lead reveal" style="max-width: 440px;">
+          Production engineering outside AI: offline-first architectures, realtime WebSockets, and low-latency client applications.
+        </p>
+      </div>
+"""
+
+    for p in systems_projects:
+        html_content += f"""      <!-- Always-Visible Card: {escape(p['title'])} -->
+      <article class="systems-card reveal" id="{escape(p['id'])}">
+        <span class="bracket-corner bracket-corner-tl"></span>
+        <span class="bracket-corner bracket-corner-tr"></span>
+        <span class="bracket-corner bracket-corner-bl"></span>
+        <span class="bracket-corner bracket-corner-br"></span>
+
+        <div class="proj-header">
+          <div>
+            <h3 class="proj-title">{escape(p['title'])}</h3>
+            <p class="proj-domain">{escape(p['domain'])}</p>
+          </div>
+          <div>
+            <a class="btn btn-ghost" href="{escape(p['repoUrl'])}" target="_blank" rel="noopener noreferrer">
+              GitHub Repo ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Core Engineering Details -->
+        <ul class="proj-bullets">
+"""
+        for b in p["bullets"]:
+            html_content += f"""          <li><span>{escape(b)}</span></li>\n"""
+
+        html_content += f"""        </ul>
+
+        <!-- Verification -->
+        <div class="proj-verify">
+          <span><strong>Verification:</strong> {escape(p['verification'])}</span>
+        </div>
+
+        <!-- Technology Tags -->
+        <div class="proj-footer">
+          <span style="font-family: var(--mono); font-size: 11px; color: var(--faint);">Technologies:</span>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+"""
+        for tag in p["tags"]:
+            html_content += f"""            <span class="telemetry-pill">{escape(tag)}</span>\n"""
+
+        html_content += f"""          </div>
+        </div>
+      </article>\n"""
+
+    html_content += f"""    </section>
+
+    <!-- ==================== WORK EXPERIENCE TIMELINE (#experience) ==================== -->
+    <section id="experience" class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow reveal">Track Record</span>
+          <h2 class="display reveal" style="margin-top: 14px;">Work Experience</h2>
+        </div>
+        <p class="lead reveal" style="max-width: 360px;">
+          Reverse chronological engineering history across applied AI, model evaluation, and enterprise software.
+        </p>
+      </div>
+
+      <div class="exp-list reveal">
+"""
+
+    for idx, exp in enumerate(experience):
+        html_content += f"""        <!-- Entry: {escape(exp['company'])} -->
+        <div class="exp-entry">
+          <span class="exp-idx">{roman_numerals[idx]}</span>
+          <div class="exp-body">
+            <div class="exp-top">
+              <span class="exp-comp">{escape(exp['company'])}</span>
+              <span class="exp-meta">{escape(exp['role'])} · {escape(exp['period'])}</span>
+            </div>
+            <ul class="exp-bullets">
+"""
+        for b in exp["bullets"]:
+            html_content += f"""              <li><span>{escape(b)}</span></li>\n"""
+
+        html_content += f"""            </ul>
+
+            <div class="exp-tags">
+              <span class="exp-tags-label">Tags:</span>
+"""
+        for t in exp["tags"]:
+            html_content += f"""              <span class="telemetry-pill">{escape(t)}</span>\n"""
+
+        html_content += f"""            </div>
+          </div>
+        </div>\n\n"""
+
+    html_content += f"""      </div>
+
+      <!-- Education & Certifications Subsection -->
+      <div class="sec-head" style="margin-top: 56px; margin-bottom: 24px;">
+        <div>
+          <span class="eyebrow reveal">Academic &amp; Training</span>
+          <h3 class="display reveal" style="font-size: clamp(24px, 3vw, 38px); margin-top: 10px;">Education &amp; Credentials</h3>
+        </div>
+      </div>
+
+      <div class="edu-grid">
+        <div class="edu-card reveal">
+          <span class="bracket-corner bracket-corner-tl"></span>
+          <span class="bracket-corner bracket-corner-br"></span>
+          <div class="edu-card-label">POSTGRADUATE SPECIALIZATIONS</div>
+          <h4 style="font-family: var(--display); font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px;">
+            Software Architecture, Machine Learning &amp; Applied Statistics
+          </h4>
+          <div style="font-family: var(--mono); font-size: 12px; color: var(--silver); margin-bottom: 12px;">
+            Educaminas · 2025 – 2027 (Expected)
+          </div>
+          <ul style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--muted);">
+            <li>— Software Architecture: Microservices, SOA, Distributed Systems, Cloud Architecture, DevOps</li>
+            <li>— Data Science &amp; Machine Learning: Big Data (Hadoop, Spark), Deep Learning, Predictive Analytics</li>
+            <li>— Applied Statistics: Demand Forecasting, ANOVA, Experimental Design, Financial Mathematics</li>
+          </ul>
+        </div>
+
+        <div class="edu-card reveal">
+          <span class="bracket-corner bracket-corner-tl"></span>
+          <span class="bracket-corner bracket-corner-br"></span>
+          <div class="edu-card-label">UNDERGRADUATE &amp; CERTIFICATION</div>
+          <h4 style="font-family: var(--display); font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 4px;">
+            Bachelor in Systems Analysis and Development
+          </h4>
+          <div style="font-family: var(--mono); font-size: 12px; color: var(--silver); margin-bottom: 16px;">
+            UNIP · São Paulo, Brazil · 2021 – 2024
+          </div>
+
+          <div style="border-top: 1px solid var(--line); padding-top: 14px;">
+            <h5 style="font-family: var(--display); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 4px;">
+              AI Professional Training
+            </h5>
+            <div style="font-family: var(--mono); font-size: 12px; color: var(--silver); margin-bottom: 6px;">
+              Hashtag Treinamentos
+            </div>
+            <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">
+              Practical, project-based programming covering scalable Python architectures, data modeling, and machine learning pipelines.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CONTACT SECTION (#contact) ==================== -->
+    <section id="contact" class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow reveal">Direct Channel</span>
+          <h2 class="display reveal" style="margin-top: 14px;">Contact</h2>
+        </div>
+        <p class="lead reveal" style="max-width: 380px;">
+          Available for applied AI &amp; LLM systems roles, multi-agent architecture consulting, and evaluation harness engineering.
+        </p>
+      </div>
+
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;" class="reveal">
+        <button type="button" class="btn btn-light" onclick="copyEmail()">
+          <span>Copy Email Address</span>
+          <span class="arrow">↗</span>
+        </button>
+        <a class="btn btn-ghost" href="mailto:owmyrstocker@gmail.com">
+          owmyrstocker@gmail.com ↗
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/owmyr" target="_blank" rel="noopener noreferrer">
+          GitHub Profile ↗
+        </a>
+        <a class="btn btn-ghost" href="https://linkedin.com/in/olmir-stocker-neto" target="_blank" rel="noopener noreferrer">
+          LinkedIn ↗
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== STUDIO FOOTER & WORDMARK ==================== -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-main">
+        <div class="foot-col">
+          <h4>Candidate</h4>
+          <div style="font-family: var(--display); font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 8px;">
+            {escape(brand_name)}
+          </div>
+          <p style="font-size: 13.5px; color: var(--muted); line-height: 1.6; max-width: 320px;">
+            {escape(headline)} specializing in applied Generative AI, multi-agent systems, and production LLM integrations.
+          </p>
+        </div>
+
+        <div class="foot-col foot-center">
+          <h4>Direct Communication</h4>
+          <div class="big">owmyrstocker@gmail.com</div>
+          <div style="font-family: var(--mono); font-size: 12px; color: var(--faint);">{escape(location)}</div>
+          <div style="margin-top: 16px;">
+            <a class="btn btn-light" href="olmir-stocker-neto-resume-ai.pdf" download="Olmir_Stocker_Neto_Resume.pdf" target="_blank" rel="noopener noreferrer">
+              Resume (PDF) ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="foot-col">
+          <h4>Coordinates &amp; Network</h4>
+          <a href="https://github.com/owmyr" target="_blank" rel="noopener noreferrer">GitHub Profile ↗</a>
+          <a href="https://linkedin.com/in/olmir-stocker-neto" target="_blank" rel="noopener noreferrer">LinkedIn Profile ↗</a>
+          <a href="https://trendscout-shopee.vercel.app" target="_blank" rel="noopener noreferrer">TrendScout Live ↗</a>
+          <a href="https://thedailybot.web.app" target="_blank" rel="noopener noreferrer">The Daily Bot Live ↗</a>
+        </div>
+      </div>
+
+      <div class="foot-bar">
+        <span>© 2026 {escape(brand_name)} · {escape(headline)}</span>
+        <span>WCAG 2.1 AA Compliant · Skills UI Studio Theme</span>
+      </div>
+    </div>
+
+    <!-- Giant Studio Parallax Wordmark -->
+    <div class="wordmark-wrap">
+      <div class="wordmark" id="wordmark">{escape(brand_name.upper())}</div>
+    </div>
+  </footer>
+
+  <!-- ==================== AURORA ENGINE (Skills UI Studio Shaders) ==================== -->
+  <script type="module">
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    try {{
+      const {{ ShaderMount, meshGradientFragmentShader, getShaderColorFromString }} =
+        await import('https://esm.sh/@paper-design/shaders@latest');
+
+      // Studio Mono Palette
+      const field = ['#050507', '#6b6b76', '#26262c', '#4c4c55', '#121216'];
+      const sheen = ['#000000', '#8a8a94', '#3a3a43'];
+
+      const sizing = {{
+        u_fit: 2, u_scale: 1, u_rotation: 0,
+        u_offsetX: 0, u_offsetY: 0, u_originX: 0.5, u_originY: 0.5,
+        u_worldWidth: 0, u_worldHeight: 0
+      }};
+
+      new ShaderMount(
+        document.getElementById('aurora-field'),
+        meshGradientFragmentShader,
+        {{ u_colors: field.map(getShaderColorFromString), u_colorsCount: field.length, u_distortion: 0.85, u_swirl: 0.18, u_grainMixer: 0, u_grainOverlay: 0, ...sizing }},
+        undefined,
+        reduce ? 0 : 0.25,
+        0
+      );
+
+      new ShaderMount(
+        document.getElementById('aurora-sheen'),
+        meshGradientFragmentShader,
+        {{ u_colors: sheen.map(getShaderColorFromString), u_colorsCount: sheen.length, u_distortion: 1.0, u_swirl: 0.6, u_grainMixer: 0, u_grainOverlay: 0, ...sizing }},
+        undefined,
+        reduce ? 0 : 0.18,
+        0
+      );
+    }} catch (err) {{
+      const stage = document.querySelector('.aurora-stage');
+      if (stage) stage.style.background = 'radial-gradient(70% 55% at 50% 25%, #1a1a1e 0%, #0c0c0e 45%, #050505 80%)';
+    }}
+  </script>
+
+  <!-- ==================== STUDIO CLIENT INTERACTIONS ==================== -->
+  <script>
+    // Sticky nav backdrop
+    const nav = document.getElementById('nav');
+    if (nav) {{
+      const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 25);
+      onScroll();
+      window.addEventListener('scroll', onScroll, {{ passive: true }});
+    }}
+
+    // Studio Reveal on scroll (staggered)
+    const io = new IntersectionObserver((entries) => {{
+      entries.forEach((e) => {{
+        if (!e.isIntersecting) return;
+        const items = [...e.target.parentElement.querySelectorAll('.reveal')];
+        e.target.style.transitionDelay = Math.min(items.indexOf(e.target) * 60, 360) + 'ms';
+        e.target.classList.add('in-view');
+        io.unobserve(e.target);
+      }});
+    }}, {{ threshold: 0.08, rootMargin: '0px 0px -6% 0px' }});
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // Footer wordmark parallax
+    const wm = document.getElementById('wordmark');
+    if (wm && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{
+      window.addEventListener('scroll', () => {{
+        const r = wm.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) {{
+          const p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+          wm.style.transform = `translateY(${{(0.5 - p) * 35}}px)`;
+        }}
+      }}, {{ passive: true }});
+    }}
+
+    // 1-Click Copy Email with Toast Notification
+    function copyEmail() {{
+      const email = 'owmyrstocker@gmail.com';
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {{
+        navigator.clipboard.writeText(email).then(() => {{
+          showToast('Email copied to clipboard: ' + email);
+        }}).catch(() => {{
+          showToast('Email: ' + email);
+        }});
+      }} else {{
+        showToast('Email: ' + email);
+      }}
+    }}
+
+    function showToast(msg) {{
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+      toastText.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {{
+        toast.classList.remove('show');
+      }}, 3200);
+    }}
+  </script>
+</body>
+</html>
+"""
+
+    with open("index.html", "w", encoding="utf-8") as out:
+        out.write(html_content)
+    print("Successfully generated index.html following handoff.md specification!")
+
+if __name__ == "__main__":
+    main()
