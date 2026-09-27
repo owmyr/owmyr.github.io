@@ -1,8 +1,8 @@
 /**
  * @file portfolio.ts
  * @description Strict TypeScript contracts for the Applied AI & LLM Systems Portfolio.
- * Models navigation, system architecture specifications, experience,
- * technical skills matrix, and academic credentials based on handoff.md.
+ * Models navigation, interactive system architecture pipelines, experience,
+ * technical skills matrix, and academic credentials based on frontend_agent_prompt.md.
  */
 
 /**
@@ -22,15 +22,53 @@ export interface CoreTechGroup {
 }
 
 /**
- * Specification for clean, technical AI project cards.
+ * Detailed inspector data for a pipeline node stage.
+ */
+export interface NodeInspectorData {
+  protocol: string;
+  failureMode: string;
+  latencySla: string;
+}
+
+/**
+ * Stage node in the Interactive Architecture Pipeline.
+ */
+export interface PipelineNode {
+  id: string;
+  label: string;
+  status: 'active' | 'routing' | 'fallback';
+  inspector: NodeInspectorData;
+}
+
+/**
+ * Failover or safeguard branch specification for alternative routing.
+ */
+export interface FailoverBranch {
+  label: string;
+  targetStage: string;
+  inspector: NodeInspectorData;
+}
+
+/**
+ * Technical deep-dive bullet point for failure modes and resilience engineering.
+ */
+export interface DeepDiveBullet {
+  title: string;
+  detail: string;
+}
+
+/**
+ * Specification for clean, technical AI project cards with interactive architecture pipelines.
  */
 export interface AiProject {
   id: string;
   title: string;
+  subtitle: string;
   domain: string;
-  flow: string;
-  bullets: string[];
-  verification: string;
+  verificationBadge: string;
+  pipelineNodes: PipelineNode[];
+  failoverBranch?: FailoverBranch;
+  deepDiveBullets: DeepDiveBullet[];
   tags: string[];
   repoUrl: string;
   liveUrl?: string | null;

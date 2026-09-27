@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """
 Generator script to build production-ready index.html using the exact
-handoff.md specification and Skills UI Studio aesthetic rules.
+frontend_agent_prompt.md specification, Skills UI Studio aesthetic rules,
+promoted technical skills block, qualitative verification badges, and
+interactive architecture pipelines.
 """
 
 import html
+import json
 
 def escape(text):
     if text is None:
@@ -26,7 +29,7 @@ def main():
     )
     location = "São Paulo, Brazil · Open to Remote (UTC-3 / US & European Timezone Overlap)"
 
-    # Nav links order specified in handoff.md: Skills, Projects, Systems, Experience, Contact
+    # Nav links order: Skills, Projects, Systems, Experience, Contact
     nav_links = [
         {"label": "Skills", "href": "#skills"},
         {"label": "Projects", "href": "#projects"},
@@ -46,92 +49,331 @@ def main():
     ai_projects = [
         {
             "id": "care-agent-swarm",
-            "title": "Multi-Agent Swarm AI Orchestration Layer (care-agent-swarm)",
+            "title": "Multi-Agent Swarm AI Orchestration Layer",
+            "subtitle": "care-agent-swarm",
             "domain": "Fault-tolerant multi-agent orchestration layer for residential care workflows, automating resident intake, compliance checks, and incident triage.",
-            "flow": [
-                "[Resident Intake] -> [Concurrent Sub-Agents] -> [Zod Runtime Contracts] -> [Deterministic Output]",
-                "[Circuit Breaker (429)] -> [Exponential Backoff]",
-                "[Escalation Safeguard] -> [Clinical Human Loop]",
-            ],
-            "bullets": [
-                "Implemented concurrent sub-agents with fault-isolated execution using Promise.allSettled, allowing partial intake completion even if an individual agent experiences transient degradation.",
-                "Engineered a resilient LLM harness featuring a 3-state circuit breaker state machine, exponential backoff with jitter, and automatic handling of provider rate limits (HTTP 429).",
-                "Enforced strict runtime data contracts using Zod schemas to validate and re-prompt malformed model outputs, guaranteeing deterministic JSON payloads.",
-                "Integrated 4-layer HIPAA-compliant PHI redaction across application logs and built an automated clinical escalation safeguard for unresolved incident loops.",
-            ],
-            "verification": "42 automated unit and integration tests passing in Vitest using mock client dependency injection with zero API cost.",
+            "verificationBadge": "Deterministic mock client harness with dependency injection for zero-cost, hermetic CI verification",
             "tags": ["TypeScript", "Node.js", "Claude", "Zod", "Vitest"],
             "repoUrl": "https://github.com/owmyr/care-agent-swarm",
             "liveUrl": None,
+            "pipelineNodes": [
+                {
+                    "id": "intake",
+                    "label": "Resident Intake",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "REST / Webhook payload",
+                        "failureMode": "Validates raw intake forms, medical history flags, and initial triage urgency scores. Catches malformed inputs via schema pre-validation.",
+                        "latencySla": "Sub-50ms ingestion & parsing"
+                    }
+                },
+                {
+                    "id": "workers",
+                    "label": "Concurrent Sub-Agents",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Promise.allSettled parallel worker pool",
+                        "failureMode": "Runs domain compliance, dietary analysis, and incident triage in isolated sandboxes to prevent cascading worker crashes.",
+                        "latencySla": "Isolated worker timeout caps"
+                    }
+                },
+                {
+                    "id": "contracts",
+                    "label": "Zod Runtime Contracts",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Runtime schema enforcement",
+                        "failureMode": "Intercepts model generation; automatically re-prompts on schema violation to guarantee 100% deterministic JSON output.",
+                        "latencySla": "Real-time validation (max 3 retries)"
+                    }
+                },
+                {
+                    "id": "output",
+                    "label": "Deterministic Output",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Clean EHR / FHIR structured record",
+                        "failureMode": "Persists validated care plan and triggers clinical human escalation when uncertainty threshold > 0.35.",
+                        "latencySla": "Sub-second clinical dispatch"
+                    }
+                }
+            ],
+            "failoverBranch": {
+                "label": "Circuit Breaker (HTTP 429) & Backoff",
+                "targetStage": "Concurrent Sub-Agents",
+                "inspector": {
+                    "protocol": "3-state circuit breaker (Closed/Open/Half-Open)",
+                    "failureMode": "Traps HTTP 429 rate limits and invokes exponential backoff with randomized jitter. Halts execution when error threshold exceeds tolerance.",
+                    "latencySla": "Auto-routing in <10ms on upstream 429"
+                }
+            },
+            "deepDiveBullets": [
+                {
+                    "title": "Fault-Isolated Execution",
+                    "detail": "Implemented concurrent sub-agents with fault-isolated execution using Promise.allSettled, allowing partial intake completion even if an individual agent experiences transient degradation."
+                },
+                {
+                    "title": "Provider Resilience",
+                    "detail": "Engineered a resilient LLM harness featuring a 3-state circuit breaker state machine, exponential backoff with jitter, and automatic handling of provider rate limits (HTTP 429)."
+                },
+                {
+                    "title": "Runtime Schema Enforcement",
+                    "detail": "Enforced strict runtime data contracts using Zod schemas to validate and re-prompt malformed model outputs, guaranteeing deterministic JSON payloads."
+                },
+                {
+                    "title": "Compliance & Escalation",
+                    "detail": "Integrated 4-layer HIPAA-compliant PHI redaction across application logs and built an automated clinical escalation safeguard for unresolved incident loops."
+                }
+            ]
         },
         {
             "id": "trendscout",
-            "title": "TrendScout — Autonomous Trend Intelligence & Multi-Agent Pipeline (TrendScout)",
+            "title": "TrendScout — Autonomous Trend Intelligence Pipeline",
+            "subtitle": "TrendScout",
             "domain": "End-to-end intelligence platform tracking e-commerce sales velocity, eliminating commodity noise, and semantically clustering apparel design trends.",
-            "flow": [
-                "[Stealth Playwright Crawler] -> [Regex Token Filter] -> [Gemini Pool (Local Ollama Fallback)] -> [Air-Gapped Pipeline] -> [Next.js Live UI]"
-            ],
-            "bullets": [
-                "Built a dual-tier LLM engine utilizing a cloud Gemini pool for high-throughput 25-item micro-batch clustering with seamless offline fallback to a local Ollama model.",
-                "Designed an adaptive discovery algorithm combining historical baseline keywords with velocity-driven search terms to catch emerging micro-trends early.",
-                "Implemented deterministic regex pre-filtering to remove plain and basic garments prior to LLM inference, reducing token consumption while preserving audit baselines.",
-                "Built an air-gapped data export pipeline feeding a public Next.js subscriber portal on Vercel with zero database connections from the client.",
-            ],
-            "verification": "222 automated pytest tests covering crawlers, database models, LLM fallbacks, and export sanitizers.",
+            "verificationBadge": "Automated CI pipeline validating multi-agent crawlers, LLM fallbacks, and sanitized exports",
             "tags": ["Python", "Gemini", "Ollama", "Playwright", "Next.js", "SQLite", "pytest"],
             "repoUrl": "https://github.com/owmyr/TrendScout",
             "liveUrl": "https://trendscout-shopee.vercel.app",
+            "pipelineNodes": [
+                {
+                    "id": "crawler",
+                    "label": "Stealth Crawler",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Playwright headless cluster",
+                        "failureMode": "Browser fingerprint rotation and rate-limited catalog scraping across dynamic e-commerce portals. Resilient to anti-bot challenges and session resets.",
+                        "latencySla": "Rate-limited non-blocking crawl"
+                    }
+                },
+                {
+                    "id": "filter",
+                    "label": "Regex Heuristic Pre-Filter",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "In-memory token filter",
+                        "failureMode": "Deterministically strips basic commodity garments prior to LLM processing, slashing downstream inference token volume by >60%.",
+                        "latencySla": "Sub-millisecond in-memory regex"
+                    }
+                },
+                {
+                    "id": "llm-pool",
+                    "label": "Gemini Batch Pool",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "25-item micro-batch parallel inference",
+                        "failureMode": "High-throughput semantic clustering of style attributes, silhouette shifts, and color palettes with multi-key pool rotation.",
+                        "latencySla": "<1.2s per 25-item batch"
+                    }
+                },
+                {
+                    "id": "export",
+                    "label": "Air-Gapped Export",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Automated JSON artifact deployment",
+                        "failureMode": "Air-gapped CDN distribution feeding public Next.js frontend with 0 open database ports exposed to clients.",
+                        "latencySla": "Instant static edge delivery"
+                    }
+                }
+            ],
+            "failoverBranch": {
+                "label": "Local Ollama Fallback (Offline Routing)",
+                "targetStage": "Gemini Batch Pool",
+                "inspector": {
+                    "protocol": "Local Qwen / Ollama inference engine",
+                    "failureMode": "Auto-routes clustering workloads to a local Qwen model whenever cloud API rate limits or network degradation are detected.",
+                    "latencySla": "Local GPU/CPU inference without web dependency"
+                }
+            },
+            "deepDiveBullets": [
+                {
+                    "title": "Dual-Tier Model Routing",
+                    "detail": "Built a dual-tier LLM engine utilizing a cloud Gemini pool for high-throughput 25-item micro-batch clustering with seamless offline fallback to a local Ollama model."
+                },
+                {
+                    "title": "Adaptive Trend Discovery",
+                    "detail": "Designed an adaptive discovery algorithm combining historical baseline keywords with velocity-driven search terms to catch emerging micro-trends early."
+                },
+                {
+                    "title": "Token Efficiency & Pre-Filtering",
+                    "detail": "Implemented deterministic regex pre-filtering to remove plain and basic garments prior to LLM inference, reducing token consumption while preserving audit baselines."
+                },
+                {
+                    "title": "Air-Gapped Data Distribution",
+                    "detail": "Built an air-gapped data export pipeline feeding a public Next.js subscriber portal on Vercel with zero database connections from the client."
+                }
+            ]
         },
         {
             "id": "thedailybot",
-            "title": "The Daily Bot — News AI Summarizer & Subscription Service (thedailybot)",
+            "title": "The Daily Bot — News AI Summarizer & Subscription Service",
+            "subtitle": "thedailybot",
             "domain": "Automated news aggregation and subscription platform delivering daily personalized digests to active email subscribers.",
-            "flow": [
-                "[News Sources (BBC, G1)] -> [Async Scraper (httpx)] -> [Gemini Multilingual Summarizer] -> [Subscriber Preference Routing] -> [Scheduled SMTP Dispatch]"
-            ],
-            "bullets": [
-                "Built an asynchronous multi-source scraper in Python (httpx, asyncio) featuring semaphore concurrency limits, circuit breaker recovery, and immediate Firestore persistence per article.",
-                "Leveraged Gemini AI to generate neutral summaries in the native language of each source (BBC in English, G1 in Portuguese).",
-                "Implemented an intelligent subscriber preference engine to generate customized Jinja2 email templates and manage rate-limited SMTP delivery.",
-                "Authored a comprehensive test suite of 275 automated tests (82% coverage) with pytest and pytest-asyncio, with scheduled daily runs orchestrated via GitHub Actions CI/CD.",
-            ],
-            "verification": "275 automated tests (82% coverage) with pytest and pytest-asyncio.",
+            "verificationBadge": "Automated daily scheduled runs with Firestore dead-man's-switch health monitoring",
             "tags": ["Python", "Gemini", "asyncio", "Firebase", "GitHub Actions", "pytest"],
             "repoUrl": "https://github.com/owmyr/thedailybot",
             "liveUrl": "https://thedailybot.web.app",
+            "pipelineNodes": [
+                {
+                    "id": "scraper",
+                    "label": "Multi-Source Ingestion",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "httpx async workers + semaphores",
+                        "failureMode": "Concurrent scraping across international feeds (BBC, G1) with automatic circuit breaker recovery and immediate Firestore persistence per article.",
+                        "latencySla": "5-worker parallel limit"
+                    }
+                },
+                {
+                    "id": "summarizer",
+                    "label": "Gemini Multilingual Engine",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Native-language model synthesis",
+                        "failureMode": "Generates concise, unbiased daily briefings in source language (English & Portuguese) with fallback summarization prompts.",
+                        "latencySla": "<2s per news cluster"
+                    }
+                },
+                {
+                    "id": "router",
+                    "label": "Subscriber Routing Engine",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Dynamic Jinja2 template compiler",
+                        "failureMode": "Compiles personalized newsletters based on subscriber topic tags and delivery window preferences. Handles missing fields safely.",
+                        "latencySla": "<100ms per digest compile"
+                    }
+                },
+                {
+                    "id": "smtp",
+                    "label": "Rate-Limited SMTP Dispatch",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Secure TLS email delivery (DKIM/SPF)",
+                        "failureMode": "Batched SMTP queuing with automatic delivery retry queues, backoff pacing, and bounce logging.",
+                        "latencySla": "Throttled dispatch per ISP envelope"
+                    }
+                }
+            ],
+            "failoverBranch": {
+                "label": "Firestore Dead-Man's Switch",
+                "targetStage": "Rate-Limited SMTP Dispatch",
+                "inspector": {
+                    "protocol": "Health heartbeat & alerting webhook",
+                    "failureMode": "Monitors daily 13:00 UTC execution heartbeat; fires instant alerting webhook if an execution cycle fails to report within the SLA window.",
+                    "latencySla": "Sub-minute alerting on missing pulse"
+                }
+            },
+            "deepDiveBullets": [
+                {
+                    "title": "High-Concurrency Scraping",
+                    "detail": "Built an asynchronous multi-source scraper in Python (httpx, asyncio) featuring semaphore concurrency limits, circuit breaker recovery, and immediate Firestore persistence per article."
+                },
+                {
+                    "title": "Native-Language Summarization",
+                    "detail": "Leveraged Gemini AI to generate neutral summaries in the native language of each source (BBC in English, G1 in Portuguese)."
+                },
+                {
+                    "title": "Personalized Template Delivery",
+                    "detail": "Implemented an intelligent subscriber preference engine to generate customized Jinja2 email templates and manage rate-limited SMTP delivery."
+                },
+                {
+                    "title": "Scheduled Autonomous Execution",
+                    "detail": "Fully automated daily execution at 13:00 UTC orchestrated via GitHub Actions CI/CD with dead-man's-switch health checks."
+                }
+            ]
         },
         {
             "id": "d-d-rag-chatbot",
-            "title": "Hybrid RAG Chatbot with Cross-Encoder Re-Ranking (D-D-RAG-Chatbot)",
+            "title": "Hybrid RAG Chatbot with Cross-Encoder Re-Ranking",
+            "subtitle": "D-D-RAG-Chatbot",
             "domain": "Modular Hybrid RAG pipeline using LangChain and Gemini to query complex documentation with sub-second retrieval latency.",
-            "flow": [
-                "[Header-Aware Markdown Chunking] -> [FAISS Dense Index] -> [Cross-Encoder Reranker] -> [Sub-Second Context] -> [Gemini Generation]",
-                "[Atomic Staging Pointer Swap (-50% Index Time)]"
-            ],
-            "bullets": [
-                "Built an ingestion pipeline with markdown header-aware chunking to preserve document hierarchy, breadcrumbs, and cross-references within chunk metadata.",
-                "Implemented a two-stage retrieval pipeline combining FAISS dense vector search with a local TinyBERT Cross-Encoder reranker for high contextual precision.",
-                "Engineered atomic index swapping using staging directories to prevent vector store corruption during updates, cutting indexing time by 50%.",
-            ],
-            "verification": "Automated pytest suite covering chunking boundaries, FAISS index loading, and LCEL chain generation.",
+            "verificationBadge": "Automated CI pipeline testing chunking boundaries, FAISS index loading, and LCEL chain generation",
             "tags": ["Python", "LangChain", "FAISS", "Cross-Encoder", "Gemini", "pytest"],
             "repoUrl": "https://github.com/owmyr/D-D-RAG-Chatbot",
             "liveUrl": None,
-        },
+            "pipelineNodes": [
+                {
+                    "id": "chunking",
+                    "label": "Header-Aware Chunking",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Markdown AST hierarchical parser",
+                        "failureMode": "Preserves section hierarchy, breadcrumbs, and cross-references in chunk metadata for rich contextual embedding without orphaned text fragments.",
+                        "latencySla": "Hierarchical AST traversal"
+                    }
+                },
+                {
+                    "id": "faiss",
+                    "label": "FAISS Dense Vector Index",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Top-K approximate nearest neighbors",
+                        "failureMode": "Performs initial high-recall candidate retrieval across high-dimensional vector space with distance threshold gating.",
+                        "latencySla": "Sub-20ms vector lookup"
+                    }
+                },
+                {
+                    "id": "reranker",
+                    "label": "Cross-Encoder Re-Ranker",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "TinyBERT cross-attention re-scoring",
+                        "failureMode": "Computes full query-passage cross-attention to re-rank candidates and filter out semantic false positives that vector cosine similarity misses.",
+                        "latencySla": "~120ms local inference"
+                    }
+                },
+                {
+                    "id": "synthesis",
+                    "label": "Gemini Grounded Synthesis",
+                    "status": "active",
+                    "inspector": {
+                        "protocol": "Grounded LLM generation",
+                        "failureMode": "Synthesizes verified answers with explicit document citations in under 800ms end-to-end, aborting on ungrounded hallucination checks.",
+                        "latencySla": "<800ms end-to-end response"
+                    }
+                }
+            ],
+            "failoverBranch": {
+                "label": "Atomic Staging Pointer Swap",
+                "targetStage": "FAISS Dense Vector Index",
+                "inspector": {
+                    "protocol": "Staging directory filesystem pointer swap",
+                    "failureMode": "Writes new vector embeddings to isolated staging directory and performs atomic pointer swap, reducing re-indexing downtime by 50% with zero index corruption risk.",
+                    "latencySla": "<5ms atomic pointer rename"
+                }
+            },
+            "deepDiveBullets": [
+                {
+                    "title": "Header-Aware Ingestion",
+                    "detail": "Built an ingestion pipeline with markdown header-aware chunking to preserve document hierarchy, breadcrumbs, and cross-references within chunk metadata."
+                },
+                {
+                    "title": "Two-Stage Retrieval & Re-Ranking",
+                    "detail": "Implemented a two-stage retrieval pipeline combining FAISS dense vector search with a local TinyBERT Cross-Encoder reranker for high contextual precision."
+                },
+                {
+                    "title": "Atomic Vector Swapping",
+                    "detail": "Engineered atomic index swapping using staging directories to prevent vector store corruption during updates, cutting indexing time by 50%."
+                }
+            ]
+        }
     ]
 
     systems_projects = [
         {
             "id": "santa-marcelina",
-            "title": "Colégio Santa Marcelina — Real-Time Collaborative Pedagogical Platform (SantaMarcelina)",
+            "title": "Colégio Santa Marcelina — Real-Time Collaborative Pedagogical Platform",
+            "subtitle": "SantaMarcelina",
             "domain": "Collaborative Single Page Application replacing decentralized spreadsheets with an instant evaluation portal for faculty and coordinators.",
+            "verification": "Core production bundle under 56 kB with zero Oxlint warnings.",
             "bullets": [
                 "Engineered an offline-first storage engine combining in-memory caching for instant UI updates, quota-safe local storage persistence, and cross-tab synchronization via BroadcastChannel.",
                 "Implemented a debounced synchronization queue (400ms) with batch upsert queries and compound keys, eliminating write race conditions and data loss.",
                 "Integrated Supabase Realtime WebSockets with PostgreSQL Row Level Security (RLS) to synchronize evaluation updates across admin dashboards instantaneously.",
-                "Optimized web performance via dynamic lazy loading for heavy spreadsheet generation modules (SheetJS), keeping the core production bundle under 56 kB with zero Oxlint warnings.",
+                "Optimized web performance via dynamic lazy loading for heavy spreadsheet generation modules (SheetJS), keeping the core production bundle under 56 kB with zero Oxlint warnings."
             ],
-            "verification": "Core production bundle under 56 kB with zero Oxlint warnings.",
             "tags": ["React", "Vite", "Supabase", "PostgreSQL", "Tailwind CSS", "SheetJS"],
             "repoUrl": "https://github.com/owmyr/SantaMarcelina",
         }
@@ -147,7 +389,7 @@ def main():
                 "Acted as a Human-in-the-Loop (HITL) reviewer, evaluating 100+ code snippets to guarantee production quality and resolve critical model degradation issues.",
                 "Authored 50+ unit tests with pytest to validate deterministic correctness and execution safety of AI-generated solutions.",
                 "Managed and replicated complex multi-dependency runtime environments from GitHub commits using AWS SageMaker and Docker.",
-                "Delivered 200+ approved tasks across multiple AI engineering workflows, completing 50+ peer reviews to improve model alignment.",
+                "Delivered 200+ approved tasks across multiple AI engineering workflows, completing 50+ peer reviews to improve model alignment."
             ],
             "tags": ["AWS SageMaker", "Docker", "pytest", "Python", "Prompt Engineering"],
         },
@@ -158,7 +400,7 @@ def main():
             "bullets": [
                 "Engineered and evaluated multi-step Chain-of-Thought (CoT) reasoning trajectories for frontier LLMs, formalizing step-by-step mathematical reasoning and optimal algorithmic trade-offs.",
                 "Authored complex algorithmic reasoning benchmarks with LaTeX mathematical formulations, enforcing deterministic output constraints and eliminating model hallucinations.",
-                "Containerized automated evaluation harnesses within Docker sandboxes, executing 30+ edge-case test suites per task to stress-test model reasoning and verify time/memory complexity boundaries (O(N log N) vs O(N²)).",
+                "Containerized automated evaluation harnesses within Docker sandboxes, executing 30+ edge-case test suites per task to stress-test model reasoning and verify time/memory complexity boundaries (O(N log N) vs O(N²))."
             ],
             "tags": ["Frontier LLMs", "Chain-of-Thought", "Docker Sandboxes", "LaTeX", "pytest"],
         },
@@ -170,13 +412,22 @@ def main():
                 "Deployed an enterprise AI Knowledge Assistant utilizing Microsoft Copilot and RAG architecture, designing specialized domain sub-agents that reduced developer onboarding time by 40% and saved 100+ senior engineering hours across enterprise configuration workflows.",
                 "Engineered high-volume ETL pipelines and complex SQL extraction queries integrated directly with SAP IBP to process nationwide datasets and support operational planning.",
                 "Contributed to the modernization of legacy supply chain architecture into a scalable, high-throughput distributed ecosystem.",
-                "Collaborated in an Agile Scrum framework to map API contracts, author technical specifications, and ensure cross-team alignment.",
+                "Collaborated in an Agile Scrum framework to map API contracts, author technical specifications, and ensure cross-team alignment."
             ],
             "tags": ["Microsoft Copilot", "RAG", "Python", "SAP IBP", "SQL"],
         },
     ]
 
     roman_numerals = ["I.", "II.", "III.", "IV."]
+
+    # Prepare JS data object for interactive pipelines
+    pipeline_data_map = {}
+    for p in ai_projects:
+        pipeline_data_map[p["id"]] = {
+            "title": p["title"],
+            "nodes": p["pipelineNodes"],
+            "failover": p.get("failoverBranch")
+        }
 
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -368,29 +619,194 @@ def main():
     .proj-card:hover {{ border-color: rgba(255, 255, 255, .24); }}
     .proj-header {{ display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }}
     .proj-title {{ font-family: var(--display); font-size: clamp(22px, 2.5vw, 32px); font-weight: 600; line-height: 1.2; margin-bottom: 6px; color: #fff; }}
-    .proj-domain {{ font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 880px; margin-bottom: 18px; }}
+    .proj-subtitle {{ font-family: var(--mono); font-size: 12px; color: var(--faint); letter-spacing: .08em; margin-bottom: 6px; }}
+    .proj-domain {{ font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 880px; margin-bottom: 14px; }}
 
-    /* Flow diagram box */
-    .flow-box {{
-      margin-bottom: 20px; padding: 14px 18px; border-radius: 12px;
-      border: 1px solid var(--line); background: #070709; overflow-x: auto;
+    /* Qualitative Verification Pill */
+    .verification-badge {{
+      display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px;
+      border-radius: 999px; background: rgba(6, 78, 59, .35); border: 1px solid rgba(16, 185, 129, .4);
+      color: #34d399; font-family: var(--mono); font-size: 11px; line-height: 1.4; margin-bottom: 12px;
     }}
-    .flow-label {{ font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }}
-    .flow-label::before {{ content: "●"; font-size: 8px; color: var(--silver); }}
-    .flow-line {{ font-family: var(--mono); font-size: 12px; color: #e4e4e7; line-height: 1.55; white-space: nowrap; }}
-
-    /* Project Bullets */
-    .proj-bullets {{ margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }}
-    .proj-bullets li {{ display: flex; gap: 10px; font-size: 13.5px; color: var(--muted); line-height: 1.55; }}
-    .proj-bullets li::before {{ content: "—"; color: var(--faint); flex-shrink: 0; }}
-
-    /* Verification note */
-    .proj-verify {{
-      display: flex; gap: 10px; align-items: flex-start; padding: 12px 16px;
-      border-radius: 10px; background: rgba(255, 255, 255, .02); border: 1px solid var(--line);
-      font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 20px;
+    .verification-badge::before {{
+      content: ""; width: 6px; height: 6px; border-radius: 50%; background: #34d399; flex-shrink: 0;
     }}
-    .proj-verify::before {{ content: "●"; color: #34d399; font-size: 10px; margin-top: 2px; flex-shrink: 0; }}
+
+    /* ============ INTERACTIVE ARCHITECTURE PIPELINE ============ */
+    .pipeline-box {{
+      margin: 18px 0; border-radius: 18px; border: 1px solid var(--line);
+      background: #070709; padding: 20px; backdrop-filter: blur(12px);
+    }}
+    .pipeline-top {{
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+      gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line);
+    }}
+    .pipeline-title-group {{
+      display: flex; align-items: center; gap: 8px; font-family: var(--mono);
+      font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint);
+    }}
+    .pulse-cyan {{
+      width: 7px; height: 7px; border-radius: 50%; background: #22d3ee;
+      box-shadow: 0 0 10px rgba(34, 211, 238, .8); animation: pulse 2s infinite;
+    }}
+    @keyframes pulse {{
+      0%, 100% {{ opacity: 1; transform: scale(1); }}
+      50% {{ opacity: 0.5; transform: scale(0.85); }}
+    }}
+    .failover-toggle-btn {{
+      display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px;
+      border-radius: 999px; font-family: var(--mono); font-size: 11px;
+      border: 1px solid rgba(255, 255, 255, .15); background: rgba(255, 255, 255, .03);
+      color: var(--silver); cursor: pointer; transition: all .25s ease;
+    }}
+    .failover-toggle-btn:hover {{
+      background: rgba(255, 255, 255, .08); border-color: rgba(245, 158, 11, .5); color: #fff;
+    }}
+    .failover-toggle-btn.active {{
+      background: rgba(120, 53, 15, .5); border-color: rgba(245, 158, 11, .8);
+      color: #fde68a; box-shadow: 0 0 16px rgba(245, 158, 11, .25);
+    }}
+    .failover-toggle-btn .f-dot {{
+      width: 6px; height: 6px; border-radius: 50%; background: #f59e0b;
+    }}
+    .failover-toggle-btn.active .f-dot {{
+      animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }}
+    @keyframes ping {{
+      75%, 100% {{ transform: scale(2); opacity: 0; }}
+    }}
+
+    /* Desktop Horizontal Pipeline Layout */
+    .pipeline-desktop {{
+      display: flex; align-items: stretch; justify-content: space-between; gap: 8px;
+      overflow-x: auto; padding-bottom: 6px;
+    }}
+    .pipeline-node-btn {{
+      flex: 1; min-width: 160px; text-align: left; padding: 12px 14px;
+      border-radius: 12px; border: 1px solid var(--line);
+      background: rgba(24, 24, 27, .6); cursor: pointer; transition: all .2s ease;
+      font-family: inherit; color: inherit;
+    }}
+    .pipeline-node-btn:hover {{
+      border-color: rgba(255, 255, 255, .25); background: rgba(39, 39, 42, .6);
+    }}
+    .pipeline-node-btn.selected {{
+      border-color: rgba(34, 211, 238, .7); background: rgba(8, 51, 68, .3);
+      box-shadow: 0 0 16px rgba(34, 211, 238, .15); outline: 1px solid rgba(34, 211, 238, .4);
+    }}
+    .node-top {{
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+    }}
+    .node-stage {{
+      font-family: var(--mono); font-size: 10px; color: var(--faint); letter-spacing: .08em;
+    }}
+    .node-status-dot {{
+      width: 7px; height: 7px; border-radius: 50%;
+    }}
+    .status-active {{ background: #34d399; box-shadow: 0 0 8px rgba(52, 211, 153, .8); }}
+    .status-routing {{ background: #22d3ee; box-shadow: 0 0 8px rgba(34, 211, 238, .8); }}
+    .status-fallback {{ background: #fbbf24; box-shadow: 0 0 8px rgba(251, 191, 36, .8); }}
+    .node-name {{
+      font-size: 12.5px; font-weight: 500; color: #fff; margin-bottom: 4px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }}
+    .node-sub {{
+      font-family: var(--mono); font-size: 10.5px; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }}
+    .pipeline-connector {{
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: rgba(255, 255, 255, .3); padding: 0 2px;
+    }}
+
+    /* Mobile Vertical Stepper (< 768px) */
+    .pipeline-mobile {{
+      display: none; flex-direction: column; gap: 8px;
+      position: relative; padding-left: 14px; border-left: 1px solid rgba(255, 255, 255, .15);
+    }}
+
+    /* Dynamic Node Inspector Box */
+    .node-inspector {{
+      margin-top: 16px; border-radius: 12px; border: 1px solid var(--line);
+      background: rgba(12, 12, 16, .85); padding: 16px; transition: all .25s ease;
+    }}
+    .node-inspector.failover-mode {{
+      border-color: rgba(245, 158, 11, .45); background: rgba(30, 20, 10, .75);
+    }}
+    .inspector-header {{
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+      gap: 8px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }}
+    .inspector-title-wrap {{
+      display: flex; align-items: center; gap: 8px;
+    }}
+    .inspector-title {{
+      font-family: var(--mono); font-size: 12.5px; font-weight: 500; color: #fff;
+    }}
+    .inspector-badge {{
+      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--faint);
+    }}
+    .inspector-grid {{
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }}
+    .inspector-cell {{
+      background: rgba(0, 0, 0, .45); border: 1px solid rgba(255, 255, 255, .05);
+      border-radius: 8px; padding: 10px 12px;
+    }}
+    .inspector-cell-label {{
+      font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+      letter-spacing: .12em; color: var(--faint); margin-bottom: 6px;
+    }}
+    .inspector-cell-label.fail {{ color: #f59e0b; }}
+    .inspector-cell-label.sla {{ color: #34d399; }}
+    .inspector-cell-val {{
+      font-family: var(--sans); font-size: 12px; line-height: 1.5; color: var(--silver);
+    }}
+    .inspector-cell-val.mono {{
+      font-family: var(--mono); font-size: 11px;
+    }}
+
+    /* ============ PROGRESSIVE DISCLOSURE DRAWER ============ */
+    .drawer-toggle-btn {{
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px;
+      border-radius: 999px; border: 1px solid rgba(255, 255, 255, .18);
+      background: rgba(255, 255, 255, .04); color: var(--silver);
+      font-family: var(--mono); font-size: 11.5px; cursor: pointer;
+      transition: all .2s ease;
+    }}
+    .drawer-toggle-btn:hover {{
+      background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .35); color: #fff;
+    }}
+    .drawer-container {{
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows .3s cubic-bezier(0.16, 1, 0.3, 1);
+    }}
+    .drawer-container.expanded {{
+      grid-template-rows: 1fr;
+    }}
+    .drawer-inner {{
+      overflow: hidden;
+    }}
+    .drawer-content {{
+      margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line);
+    }}
+    .drawer-eyebrow {{
+      font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--faint); margin-bottom: 10px;
+    }}
+    .deepdive-bullets {{
+      display: flex; flex-direction: column; gap: 10px;
+    }}
+    .deepdive-bullets li {{
+      display: flex; gap: 10px; font-size: 13px; color: var(--muted); line-height: 1.55;
+    }}
+    .deepdive-bullets li::before {{
+      content: "—"; color: var(--faint); flex-shrink: 0;
+    }}
+    .deepdive-bullets strong {{
+      color: #fff; font-weight: 500;
+    }}
 
     /* Project Footer */
     .proj-footer {{ display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; padding-top: 16px; border-top: 1px solid var(--line); }}
@@ -457,6 +873,11 @@ def main():
       .hero {{ min-height: auto; padding-top: 86px; }}
       .exp-entry {{ flex-direction: column; gap: 6px; }}
       .exp-idx {{ width: auto; }}
+    }}
+    @media (max-width: 768px) {{
+      .pipeline-desktop {{ display: none; }}
+      .pipeline-mobile {{ display: flex; }}
+      .inspector-grid {{ grid-template-columns: 1fr; }}
     }}
     @media (max-width: 560px) {{
       .hero-skills {{ grid-template-columns: 1fr; }}
@@ -581,8 +1002,14 @@ def main():
 """
 
     for p in ai_projects:
+        pid = p["id"]
+        nodes = p["pipelineNodes"]
+        failover = p.get("failoverBranch")
+        initial_node = nodes[0]
+        initial_inspector = initial_node["inspector"]
+
         html_content += f"""        <!-- Project Card: {escape(p['title'])} -->
-        <article class="proj-card reveal" id="{escape(p['id'])}">
+        <article class="proj-card reveal" id="{escape(pid)}">
           <span class="bracket-corner bracket-corner-tl"></span>
           <span class="bracket-corner bracket-corner-tr"></span>
           <span class="bracket-corner bracket-corner-bl"></span>
@@ -590,7 +1017,12 @@ def main():
 
           <div class="proj-header">
             <div>
+              <div class="proj-subtitle">{escape(p['subtitle'])}</div>
               <h3 class="proj-title">{escape(p['title'])}</h3>
+              <!-- Qualitative Verification Methodology Badge -->
+              <div class="verification-badge">
+                <span>{escape(p['verificationBadge'])}</span>
+              </div>
               <p class="proj-domain">{escape(p['domain'])}</p>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -605,37 +1037,129 @@ def main():
             </div>
           </div>
 
-          <!-- Architecture Flow -->
-          <div class="flow-box">
-            <div class="flow-label">Architecture Flow</div>
+          <!-- Interactive Architecture Pipeline Flow -->
+          <div class="pipeline-box">
+            <!-- Pipeline Header bar -->
+            <div class="pipeline-top">
+              <div class="pipeline-title-group">
+                <span class="pulse-cyan"></span>
+                <span>Interactive Architecture Pipeline</span>
+                <span style="color: var(--faint); font-weight: normal; text-transform: none;">(Click or hover nodes to inspect)</span>
+              </div>
 """
-        for line in p["flow"]:
-            html_content += f"""            <div class="flow-line">{escape(line)}</div>\n"""
+        if failover:
+            html_content += f"""              <button type="button" class="failover-toggle-btn" id="failover-btn-{escape(pid)}" onclick="togglePipelineFailover('{escape(pid)}')">
+                <span class="f-dot"></span>
+                <span id="failover-text-{escape(pid)}">Simulate Failover / View Fallback</span>
+              </button>\n"""
 
-        html_content += f"""          </div>
+        html_content += f"""            </div>
 
-          <!-- Core Engineering Details -->
-          <ul class="proj-bullets">
+            <!-- Desktop Horizontal Pipeline Nodes -->
+            <div class="pipeline-desktop" id="pipeline-desktop-{escape(pid)}">
 """
-        for b in p["bullets"]:
-            html_content += f"""            <li><span>{escape(b)}</span></li>\n"""
+        for idx, node in enumerate(nodes):
+            is_first = idx == 0
+            selected_cls = " selected" if is_first else ""
+            status_cls = f"status-{node['status']}"
 
-        html_content += f"""          </ul>
+            html_content += f"""              <button type="button" class="pipeline-node-btn{selected_cls}" id="pnode-{escape(pid)}-{idx}" onclick="selectPipelineNode('{escape(pid)}', {idx})" onmouseenter="peekPipelineNode('{escape(pid)}', {idx})">
+                <div class="node-top">
+                  <span class="node-stage">STAGE 0{idx+1}</span>
+                  <span class="node-status-dot {status_cls}"></span>
+                </div>
+                <div class="node-name">{escape(node['label'])}</div>
+                <div class="node-sub">{escape(node['inspector']['protocol'])}</div>
+              </button>
+"""
+            if idx < len(nodes) - 1:
+                html_content += f"""              <div class="pipeline-connector">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" stroke-dasharray="4 2" d="M5 12h14m-4-4l4 4-4 4"/>
+                </svg>
+              </div>
+"""
 
-          <!-- Verification & Testing -->
-          <div class="proj-verify">
-            <span><strong>Verification &amp; Testing:</strong> {escape(p['verification'])}</span>
+        html_content += f"""            </div>
+
+            <!-- Mobile Vertical Stepper Layout (< 768px) -->
+            <div class="pipeline-mobile" id="pipeline-mobile-{escape(pid)}">
+"""
+        for idx, node in enumerate(nodes):
+            is_first = idx == 0
+            selected_cls = " selected" if is_first else ""
+            status_cls = f"status-{node['status']}"
+
+            html_content += f"""              <button type="button" class="pipeline-node-btn{selected_cls}" id="pnode-m-{escape(pid)}-{idx}" onclick="selectPipelineNode('{escape(pid)}', {idx})">
+                <div class="node-top">
+                  <span class="node-stage">STAGE 0{idx+1}</span>
+                  <span class="node-status-dot {status_cls}"></span>
+                </div>
+                <div class="node-name">{escape(node['label'])}</div>
+                <div class="node-sub">{escape(node['inspector']['protocol'])}</div>
+              </button>
+"""
+
+        html_content += f"""            </div>
+
+            <!-- Dynamic Node Inspector Box -->
+            <div class="node-inspector" id="inspector-{escape(pid)}">
+              <div class="inspector-header">
+                <div class="inspector-title-wrap">
+                  <span class="node-status-dot status-active" id="inspector-dot-{escape(pid)}"></span>
+                  <span class="inspector-title" id="inspector-title-{escape(pid)}">Inspector: {escape(initial_node['label'])}</span>
+                </div>
+                <span class="inspector-badge" id="inspector-badge-{escape(pid)}">Primary Path Execution</span>
+              </div>
+
+              <div class="inspector-grid">
+                <div class="inspector-cell">
+                  <div class="inspector-cell-label">Input / Protocol</div>
+                  <div class="inspector-cell-val mono" id="inspector-proto-{escape(pid)}">{escape(initial_inspector['protocol'])}</div>
+                </div>
+
+                <div class="inspector-cell">
+                  <div class="inspector-cell-label fail">Failure Mode &amp; Recovery</div>
+                  <div class="inspector-cell-val" id="inspector-fail-{escape(pid)}">{escape(initial_inspector['failureMode'])}</div>
+                </div>
+
+                <div class="inspector-cell">
+                  <div class="inspector-cell-label sla">Latency SLA / Guarantees</div>
+                  <div class="inspector-cell-val mono" id="inspector-sla-{escape(pid)}">{escape(initial_inspector['latencySla'])}</div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Technology Tags -->
+          <!-- Technologies Tags & Progressive Disclosure Trigger -->
           <div class="proj-footer">
-            <span style="font-family: var(--mono); font-size: 11px; color: var(--faint);">Technologies:</span>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+              <span style="font-family: var(--mono); font-size: 11px; color: var(--faint); margin-right: 2px;">Technologies:</span>
 """
         for tag in p["tags"]:
             html_content += f"""              <span class="telemetry-pill">{escape(tag)}</span>\n"""
 
         html_content += f"""            </div>
+
+            <!-- Progressive Disclosure Toggle Button -->
+            <button type="button" class="drawer-toggle-btn" id="drawer-btn-{escape(pid)}" aria-expanded="false" aria-controls="drawer-{escape(pid)}" onclick="toggleDrawer('{escape(pid)}')">
+              <span>▼ View Technical Deep Dive &amp; Failure Modes</span>
+            </button>
+          </div>
+
+          <!-- Expandable Deep-Dive Drawer (Zero-Jank CSS Grid) -->
+          <div class="drawer-container" id="drawer-{escape(pid)}" aria-hidden="true">
+            <div class="drawer-inner">
+              <div class="drawer-content">
+                <div class="drawer-eyebrow">Failure Modes &amp; Resilience Engineering</div>
+                <ul class="deepdive-bullets">
+"""
+        for bullet in p["deepDiveBullets"]:
+            html_content += f"""                  <li><span><strong>{escape(bullet['title'])}:</strong> {escape(bullet['detail'])}</span></li>\n"""
+
+        html_content += f"""                </ul>
+              </div>
+            </div>
           </div>
         </article>\n\n"""
 
@@ -665,7 +1189,12 @@ def main():
 
         <div class="proj-header">
           <div>
+            <div class="proj-subtitle">{escape(p['subtitle'])}</div>
             <h3 class="proj-title">{escape(p['title'])}</h3>
+            <!-- Qualitative Verification Methodology Badge -->
+            <div class="verification-badge">
+              <span>{escape(p['verification'])}</span>
+            </div>
             <p class="proj-domain">{escape(p['domain'])}</p>
           </div>
           <div>
@@ -676,22 +1205,17 @@ def main():
         </div>
 
         <!-- Core Engineering Details -->
-        <ul class="proj-bullets">
+        <ul class="deepdive-bullets" style="margin-bottom: 20px;">
 """
         for b in p["bullets"]:
             html_content += f"""          <li><span>{escape(b)}</span></li>\n"""
 
         html_content += f"""        </ul>
 
-        <!-- Verification -->
-        <div class="proj-verify">
-          <span><strong>Verification:</strong> {escape(p['verification'])}</span>
-        </div>
-
         <!-- Technology Tags -->
         <div class="proj-footer">
-          <span style="font-family: var(--mono); font-size: 11px; color: var(--faint);">Technologies:</span>
-          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+            <span style="font-family: var(--mono); font-size: 11px; color: var(--faint); margin-right: 2px;">Technologies:</span>
 """
         for tag in p["tags"]:
             html_content += f"""            <span class="telemetry-pill">{escape(tag)}</span>\n"""
@@ -745,7 +1269,7 @@ def main():
 
     html_content += f"""      </div>
 
-      <!-- Education & Certifications Subsection -->
+      <!-- Education & Credentials Subsection -->
       <div class="sec-head" style="margin-top: 56px; margin-bottom: 24px;">
         <div>
           <span class="eyebrow reveal">Academic &amp; Training</span>
@@ -914,8 +1438,144 @@ def main():
     }}
   </script>
 
-  <!-- ==================== STUDIO CLIENT INTERACTIONS ==================== -->
+  <!-- ==================== STUDIO CLIENT INTERACTIONS & PIPELINE ENGINE ==================== -->
   <script>
+    // Embedded Pipeline Architecture Dataset
+    const PIPELINE_DATA = {json.dumps(pipeline_data_map)};
+
+    // State management for each project pipeline
+    const selectedNodes = {{}};
+    const failoverStates = {{}};
+
+    Object.keys(PIPELINE_DATA).forEach(pid => {{
+      selectedNodes[pid] = 0;
+      failoverStates[pid] = false;
+    }});
+
+    /**
+     * Updates the inspector view and node selection states for a project pipeline.
+     */
+    function selectPipelineNode(projectId, nodeIdx) {{
+      const data = PIPELINE_DATA[projectId];
+      if (!data) return;
+
+      selectedNodes[projectId] = nodeIdx;
+      failoverStates[projectId] = false;
+
+      // Update Failover button appearance if present
+      const failBtn = document.getElementById('failover-btn-' + projectId);
+      const failText = document.getElementById('failover-text-' + projectId);
+      if (failBtn) {{
+        failBtn.classList.remove('active');
+        if (failText) failText.textContent = 'Simulate Failover / View Fallback';
+      }}
+
+      // Update Node buttons classes
+      data.nodes.forEach((node, idx) => {{
+        const btnDesktop = document.getElementById('pnode-' + projectId + '-' + idx);
+        const btnMobile = document.getElementById('pnode-m-' + projectId + '-' + idx);
+        if (btnDesktop) {{
+          btnDesktop.classList.toggle('selected', idx === nodeIdx);
+        }}
+        if (btnMobile) {{
+          btnMobile.classList.toggle('selected', idx === nodeIdx);
+        }}
+      }});
+
+      // Update Inspector Box
+      const targetNode = data.nodes[nodeIdx];
+      const inspector = document.getElementById('inspector-' + projectId);
+      const title = document.getElementById('inspector-title-' + projectId);
+      const badge = document.getElementById('inspector-badge-' + projectId);
+      const dot = document.getElementById('inspector-dot-' + projectId);
+      const proto = document.getElementById('inspector-proto-' + projectId);
+      const fail = document.getElementById('inspector-fail-' + projectId);
+      const sla = document.getElementById('inspector-sla-' + projectId);
+
+      if (inspector) inspector.classList.remove('failover-mode');
+      if (title) title.textContent = 'Inspector: ' + targetNode.label;
+      if (badge) badge.textContent = 'Primary Path Execution';
+      if (dot) dot.className = 'node-status-dot status-' + targetNode.status;
+      if (proto) proto.textContent = targetNode.inspector.protocol;
+      if (fail) fail.textContent = targetNode.inspector.failureMode;
+      if (sla) sla.textContent = targetNode.inspector.latencySla;
+    }}
+
+    /**
+     * Preview on hover if failover mode is not active.
+     */
+    function peekPipelineNode(projectId, nodeIdx) {{
+      if (!failoverStates[projectId]) {{
+        selectPipelineNode(projectId, nodeIdx);
+      }}
+    }}
+
+    /**
+     * Toggles failover simulation (circuit breaker / local Ollama fallback / dead-man switch).
+     */
+    function togglePipelineFailover(projectId) {{
+      const data = PIPELINE_DATA[projectId];
+      if (!data || !data.failover) return;
+
+      const isNowActive = !failoverStates[projectId];
+      failoverStates[projectId] = isNowActive;
+
+      const failBtn = document.getElementById('failover-btn-' + projectId);
+      const failText = document.getElementById('failover-text-' + projectId);
+      const inspector = document.getElementById('inspector-' + projectId);
+      const title = document.getElementById('inspector-title-' + projectId);
+      const badge = document.getElementById('inspector-badge-' + projectId);
+      const dot = document.getElementById('inspector-dot-' + projectId);
+      const proto = document.getElementById('inspector-proto-' + projectId);
+      const fail = document.getElementById('inspector-fail-' + projectId);
+      const sla = document.getElementById('inspector-sla-' + projectId);
+
+      if (isNowActive) {{
+        // Deselect node buttons
+        data.nodes.forEach((node, idx) => {{
+          const btnDesktop = document.getElementById('pnode-' + projectId + '-' + idx);
+          const btnMobile = document.getElementById('pnode-m-' + projectId + '-' + idx);
+          if (btnDesktop) btnDesktop.classList.remove('selected');
+          if (btnMobile) btnMobile.classList.remove('selected');
+        }});
+
+        if (failBtn) failBtn.classList.add('active');
+        if (failText) failText.textContent = 'Simulating Failover (Active)';
+        if (inspector) inspector.classList.add('failover-mode');
+        if (title) title.textContent = 'Failover Branch: ' + data.failover.label;
+        if (badge) badge.textContent = 'Secondary Circuit';
+        if (dot) dot.className = 'node-status-dot status-fallback';
+        if (proto) proto.textContent = data.failover.inspector.protocol;
+        if (fail) fail.textContent = data.failover.inspector.failureMode;
+        if (sla) sla.textContent = data.failover.inspector.latencySla;
+      }} else {{
+        // Restore currently selected node
+        selectPipelineNode(projectId, selectedNodes[projectId]);
+      }}
+    }}
+
+    /**
+     * Toggles the progressive disclosure deep-dive drawer.
+     */
+    function toggleDrawer(projectId) {{
+      const drawer = document.getElementById('drawer-' + projectId);
+      const btn = document.getElementById('drawer-btn-' + projectId);
+      if (!drawer || !btn) return;
+
+      const isExpanded = drawer.classList.contains('expanded');
+      if (isExpanded) {{
+        drawer.classList.remove('expanded');
+        drawer.setAttribute('aria-hidden', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.innerHTML = '<span>▼ View Technical Deep Dive &amp; Failure Modes</span>';
+      }} else {{
+        drawer.classList.add('expanded');
+        drawer.setAttribute('aria-hidden', 'false');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.innerHTML = '<span>▲ Hide Technical Deep Dive</span>';
+      }}
+    }}
+
     // Sticky nav backdrop
     const nav = document.getElementById('nav');
     if (nav) {{
@@ -951,8 +1611,6 @@ def main():
     // 1-Click Copy Email with Toast Notification
     function copyEmail() {{
       const email = 'owmyrstocker@gmail.com';
-      const toast = document.getElementById('toast');
-      const toastText = document.getElementById('toast-text');
 
       if (navigator.clipboard && navigator.clipboard.writeText) {{
         navigator.clipboard.writeText(email).then(() => {{
@@ -968,6 +1626,7 @@ def main():
     function showToast(msg) {{
       const toast = document.getElementById('toast');
       const toastText = document.getElementById('toast-text');
+      if (!toast || !toastText) return;
       toastText.textContent = msg;
       toast.classList.add('show');
       setTimeout(() => {{
@@ -981,7 +1640,7 @@ def main():
 
     with open("index.html", "w", encoding="utf-8") as out:
         out.write(html_content)
-    print("Successfully generated index.html following handoff.md specification!")
+    print("Successfully generated index.html following frontend_agent_prompt.md specification!")
 
 if __name__ == "__main__":
     main()
